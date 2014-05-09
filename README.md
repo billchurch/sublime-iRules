@@ -20,6 +20,7 @@ The bulk of the TCL syntax highlighting was pulled from the TCL bundle by Kevin 
 Open a terminal and enter these two lines:
 ```bash
 cd ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/
+
 git clone https://github.com/billchurch/sublime-iRules
 ```
 
