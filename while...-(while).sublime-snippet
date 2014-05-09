@@ -1,0 +1,9 @@
+<snippet>
+    <content><![CDATA[while {${1:condition}} {
+	${2}
+}
+]]></content>
+    <tabTrigger>while</tabTrigger>
+    <scope>source.iRule</scope>
+    <description>while...</description>
+</snippet>
