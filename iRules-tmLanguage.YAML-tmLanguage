@@ -1,7 +1,7 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
 name: iRules
 scopeName: source.iRule
-fileTypes: [iRule]
+fileTypes: [irul, irule, iRule]
 uuid: 1c34148a-d795-11e3-bbdd-84383557b0f8
 
 patterns:

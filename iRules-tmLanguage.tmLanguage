@@ -4,6 +4,8 @@
 <dict>
 	<key>fileTypes</key>
 	<array>
+		<string>irul</string>
+		<string>irule</string>
 		<string>iRule</string>
 	</array>
 	<key>foldingStartMarker</key>
