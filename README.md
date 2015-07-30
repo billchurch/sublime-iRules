@@ -11,7 +11,9 @@ The command completion and syntax highlighting should be complete as of TMOS v11
 
 This includes highlighting and command completion:
 ![a relative link](../screenshots/commands.png?raw=true)
+
 ![a relative link](../screenshots/if.png?raw=true)
+
 ![a relative link](../screenshots/when.png?raw=true)
 
 
