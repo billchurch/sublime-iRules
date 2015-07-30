@@ -10,9 +10,9 @@ This was created from content found on DevCentral.
 The command completion and syntax highlighting should be complete as of TMOS v11.6 including special highlighting for deprecated commands, functions, and events.
 
 This includes highlighting and command completion:
-![a relative link](../screenshots/commands.png/raw=true)
-![a relative link](../screenshots/if.png/raw=true)
-![a relative link](../screenshots/when.png/raw=true)
+![a relative link](../screenshots/commands.png?raw=true)
+![a relative link](../screenshots/if.png?raw=true)
+![a relative link](../screenshots/when.png?raw=true)
 
 
 And highligting of depricated, removed, and illegal functions/events/commands:
