@@ -9,6 +9,15 @@ This was created from content found on DevCentral.
 
 The command completion and syntax highlighting should be complete as of TMOS v11.6 including special highlighting for deprecated commands, functions, and events.
 
+This includes highlighting and command completion:
+![Highlighting](/../screenshots/commands.png/raw=true "Highlighting")
+![if](/../screenshots/if.png/raw=true "if")
+![when](/../screenshots/when.png/raw=true "when")
+
+
+And highligting of depricated, removed, and illegal functions/events/commands:
+![Deprecated functions](/../screenshots/deprecated.png/raw=true "Deprecated")
+
 This bundle was updated on July 29th, 2015 and is currently maintained by Bill Church (https://github.com/billchurch/sublime-iRules).
 
 Any suggestions or improvements, please feel free to contact me.
