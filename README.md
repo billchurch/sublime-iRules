@@ -35,3 +35,5 @@ Using Package Control at https://packagecontrol.io/installation:
 # Notes
 
 Verified working with both Sublime Text 2 and 3.
+
+Deprecated events, commands, and statements obtained from: https://devcentral.f5.com/wiki/iRules.BIGIP_Commands_by_Version.ashx

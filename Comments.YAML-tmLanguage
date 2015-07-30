@@ -1,8 +1,0 @@
-# [PackageDev] target_format: plist, ext: tmLanguage
-name: Comments
-uuid: 98fe4114-d79f-11e3-ab5d-84383557b0f8
-scope: source.iRule
-settings:
-  shellVariables:
-  - name: TM_COMMENT_START
-    value: '# '
