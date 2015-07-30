@@ -5,11 +5,11 @@ sublime-iRules
 
 iRules Syntax Highlighting for F5 Networks BIG-IP iRules syntax (http://devcentral.f5.com) for the Sublime Text Editor http://www.sublimetext.com
 
-This was created from content found on DevCentral.
+This was created from content found on DevCentral (http://devcentral.f5.com).
 
-The command completion and syntax highlighting should be complete as of TMOS v11.6 including special highlighting for deprecated commands, functions, and events.
+* The command completion and syntax highlighting should be complete as of TMOS v11.6 including special highlighting for deprecated commands, functions, and events.
 
-This includes highlighting and command completion:
+* This includes highlighting and command completion:
    ![a relative link](../screenshots/commands.png?raw=true)
 
    ![a relative link](../screenshots/if.png?raw=true)
@@ -17,7 +17,7 @@ This includes highlighting and command completion:
    ![a relative link](../screenshots/when.png?raw=true)
 
 
-And highligting of depricated, removed, and illegal functions/events/commands:
+* And highligting of depricated, removed, and illegal functions/events/commands:
    ![a relative link](../screenshots/deprecated.png?raw=true)
 
 This bundle was updated on July 29th, 2015 and is currently maintained by Bill Church (https://github.com/billchurch/sublime-iRules).
