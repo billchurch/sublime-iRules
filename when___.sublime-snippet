@@ -1,9 +1,0 @@
-<snippet>
-    <content><![CDATA[when ${1:event} {
-	${2}
-}
-]]></content>
-    <tabTrigger>when</tabTrigger>
-    <scope>source.iRule</scope>
-    <description>when...</description>
-</snippet>
