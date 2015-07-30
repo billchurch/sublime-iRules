@@ -1,6 +1,5 @@
 <snippet>
-    <content><![CDATA[proc ${1:name} {${2:args}} \\
-{
+    <content><![CDATA[proc ${1:name} {${2:args}} {
 	${3}
 }
 ]]></content>
