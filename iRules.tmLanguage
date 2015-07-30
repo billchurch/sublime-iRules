@@ -119,7 +119,19 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(?&lt;=^|[\[{;])\s*(local_addr|accumulate|remote_addr|urlcatquery|ASM::violation_data|HTTP::class|WAM::disable|WAM::enable|findclass|PLUGIN::disable|XML::address|XML::collect|XML::element|XML::event|XML::eventid|XML::parse|XML::release|XML::soap|XML::subscribe|AUTH_ERROR|AUTH_FAILURE|AUTH_SUCCESS|AUTH_WANTCREDENTIAL|ASM_REQUEST_VIOLATION|HTTP_CLASS_FAILED|HTTP_CLASS_SELECTED|XML_END_DOCUMENT|XML_END_ELEMENT|XML_EVENT|XML_BEGIN_DOCUMENT|XML_BEGIN_ELEMENT|XML_CDATA)\b</string>
+			<string>(?&lt;=^|[\[{;])\s*(local_addr|accumulate|remote_addr|urlcatquery|ASM::violation_data|HTTP::class|WAM::disable|WAM::enable|findclass|PLUGIN::disable|XML::address|XML::collect|XML::element|XML::event|XML::eventid|XML::parse|XML::release|XML::soap|XML::subscribe)\b</string>
+		</dict>
+<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.deprecated.iRule</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>\b(AUTH_ERROR|AUTH_FAILURE|AUTH_SUCCESS|AUTH_WANTCREDENTIAL|ASM_REQUEST_VIOLATION|HTTP_CLASS_FAILED|HTTP_CLASS_SELECTED|XML_END_DOCUMENT|XML_END_ELEMENT|XML_EVENT|XML_BEGIN_DOCUMENT|XML_BEGIN_ELEMENT|XML_CDATA)\b</string>
 		</dict>
 		<dict>
 			<key>captures</key>
