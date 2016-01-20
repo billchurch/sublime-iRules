@@ -252,7 +252,6 @@
 		"eval",
 		"event",
 		"expr",
-		"findclass",
 		"findstr",
 		"FIX::tag",
 		"FIX_HEADER",
@@ -408,7 +407,7 @@
 		"LB_FAILED",
 		"LB_QUEUED",
 		"LB_SELECTED",
-		"library",
+		"library",a
 		"lindex",
 		"LINK::lasthop",
 		"LINK::nexthop",
