@@ -10,6 +10,7 @@ This was created from content found on DevCentral (http://devcentral.f5.com).
 * The command completion and syntax highlighting should be complete as of TMOS v11.6 including special highlighting for deprecated commands, functions, and events.
 
 * This includes highlighting and command completion:
+
    ![a relative link](../screenshots/commands.png?raw=true)
 
    ![a relative link](../screenshots/if.png?raw=true)
@@ -45,6 +46,6 @@ Using Package Control (preferred) at https://packagecontrol.io/installation:
 
 # Notes
 
-* Verified working with both Sublime Text 3 (what I'm targeting from this point).
+* Verified working with Sublime Text 3 (what I'm targeting from this point).
 
 * Deprecated events, commands, and statements obtained from: https://devcentral.f5.com/wiki/iRules.BIGIP_Commands_by_Version.ashx
