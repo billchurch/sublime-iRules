@@ -42,7 +42,7 @@ Using Package Control at https://packagecontrol.io/installation:
 
 - Remove the package, if installed manually
 - Add a repository: https://github.com/billchurch/sublime-iRules
-- Install sublime-iRules with Package Control. It should pull the correct branch from Github.
+- Install sublime-iRules with Package Control. It should pull the correct branch from Github
 
 # Notes
 
