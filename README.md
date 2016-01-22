@@ -28,27 +28,17 @@ Any suggestions or improvements, please feel free to contact me.
 
 The new TCL syntax was pulled from the TCL bundle that ships with Sublime Text 3.
 
-# Installation (Manual)
-
-Open a terminal and enter these two lines:
-```bash
-cd ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/
-
-git clone https://github.com/billchurch/sublime-iRules
-```
-
 # Installation (Package Management)
 
 ## New Way
-iRules is now in the the main repository.
+iRules is now in the the main repository. (preferred)
 
 - go to the command pallete (⌘+⇧+P)
 - select "Package Control: Install Package"
 - type "iRules" and select the iRules package
 
 ## Old Way
-
-Using Package Control (preferred) at https://packagecontrol.io/installation:
+Using Package Control at https://packagecontrol.io/installation:
 
 - Remove the package, if installed manually
 - Add a repository: https://github.com/billchurch/sublime-iRules
