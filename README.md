@@ -18,7 +18,7 @@ This was created from content found on DevCentral (http://devcentral.f5.com).
    ![a relative link](../screenshots/when.png?raw=true)
 
 
-* And highligting of deprecated, removed, and illegal functions/events/commands:
+* And highligting of deprecated, removed, and illegal functions/events/commands (requires a scheme that supports the "invalid.illegal" and "invalid.deprecated" scopes and not all do. "Monokai" that ships with Sublime Text 3 does, so you can use that to test things out:
    ![a relative link](../screenshots/deprecated.png?raw=true)
 
 This bundle was updated on July 29th, 2015 and is currently maintained by Bill Church (https://github.com/billchurch/sublime-iRules).
