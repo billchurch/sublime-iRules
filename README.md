@@ -39,6 +39,15 @@ git clone https://github.com/billchurch/sublime-iRules
 
 # Installation (Package Management)
 
+## New Way
+iRules is now in the the main repository.
+
+- go to the command pallete (CMD+SHIFT+P)
+- select "Package Control: Install Package"
+- type "iRules" and select the iRules package
+
+## Old Way
+
 Using Package Control (preferred) at https://packagecontrol.io/installation:
 
 - Remove the package, if installed manually
