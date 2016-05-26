@@ -391,6 +391,7 @@
 		"ICAP::uri",
 		"ILX::call",
 		"ILX::init",
+		"ILX::notify",
 		"IP::addr",
 		"IP::client_addr",
 		"IP::hops",
