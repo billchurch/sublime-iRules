@@ -20,10 +20,16 @@ variables:
   deprected_irule_code: 'local_addr|accumulate|remote_addr|urlcatquery|urlcatblindquery|ASM::violation_data|HTTP::class|WAM::disable|WAM::enable|findclass|matchclass|PLUGIN::disable|ROUTE::age|XML::address|XML::collect|XML::element|XML::event|XML::eventid|XML::parse|XML::release|XML::soap|XML::subscribe'
   deprected_irule_events: 'AUTH_ERROR|AUTH_FAILURE|AUTH_SUCCESS|AUTH_WANTCREDENTIAL|ASM_REQUEST_VIOLATION|HTTP_CLASS_FAILED|HTTP_CLASS_SELECTED|QOE|XML_END_DOCUMENT|XML_END_ELEMENT|XML_EVENT|XML_BEGIN_DOCUMENT|XML_BEGIN_ELEMENT|XML_CDATA'
   disabled_tcl_code: 'auto_execok|auto_import|auto_load|auto_mkindex|auto_mkindex_old|auto_qualify|auto_reset|bgerror|cd|close|dict|eof|encoding|exec|exit|fblocked|fconfigure|fcopy|file|fileevent|filename|flush|gets|glob|http|interp|load|lrepeat|lreverse|memory|namespace|open|package|pid|pkg::create|pkg_mkIndex|pwd|rename|seek|socket|source|tcl_findLibrary|tell|time|trace|unknown|update|vwait'
+  require_brace_code: 'expr|eval|if'
+  double_dash_code: 'switch|class\s+search|class\s+match|class\s+search|class\s+nextelement|regexp|regsub|glob|unset'
 
 contexts:
   main:
     - include: commands
+
+  doublesubst:
+    - match: '(?<=^|[\[{;])\s*(({{require_brace_code}})(?!.*{)|({{double_dash_code}})(?!.*--))'
+      scope: invalid.illegal.irule
 
   commands:
     - match: ^(?=\s*[^\[\{])
@@ -116,6 +122,7 @@ contexts:
           scope: punctuation.separator.continuation.irule
 
   command-name:
+    - include: doublesubst
     - match: '(?=\bwhen\b\s)'
       set: when
     - match: '(?=\bproc\b\s)'
