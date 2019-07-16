@@ -1,5 +1,12 @@
+import sublime
+import sublime_plugin
 import re
 
+import re
+
+
+class FormatError(ValueError):
+    pass
 
 RE_COMMENT = re.compile(r'^#')
 RE_ENDS_IN_EMPTY_BLOCK = re.compile(r'\b\{\s*\}$')
@@ -17,65 +24,71 @@ def format_irule(input_code, pre_indent='', tab_char=' ', tab_depth=4):
     tab_level = 0
     out = []
     continuation = False
+    print('----')
+    print(tab_level)
+    print(tab_depth)
 
-    for in_line in line.splitlines():
-        line = in_line.strip()
+    for in_line in input_code.splitlines():
+        line = in_line.strip().decode('utf8')
+        print(line)
         if line == '':
             out.append('')
-        else if RE_COMMENT.matchfull(line):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-        else if RE_ENDS_IN_EMPTY_BLOCK.matchfull(line):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-        else if RE_ENDS_IN_NEW_BLOCK.matchfull(line) or RE_IS_ONLY_END_BLOCK.matchfull(line):
-            if (RE_BEGINS_WITH_END_BLOCK.matchfull(line)):
-                tab_level -= tabDepth
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-            tab_level += tabDepth
-        else if RE_IS_ONLY_END_BLOCK.matchfull(line):
-            tab_level -= tabDepth
+        elif line.startswith('#') is not None:
+            out.append(pre_indent + tab_char * tab_level + line)
+        elif RE_ENDS_IN_EMPTY_BLOCK.match(line) is not None:
+            out.append(pre_indent + tab_char * tab_level + line)
+        elif line.endswith('{'):
+            if line.startswith('}'):
+                tab_level -= tab_depth
+            out.append(pre_indent + tab_char * tab_level + line)
+            tab_level += tab_depth
+        elif line == '}' is not None:
+            tab_level -= tab_depth
             if (tab_level < 0):
                 tab_level = 0
-                pre_indent = pre_indent.substr(tabDepth, pre_indent.length - tabDepth)
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-        else if (not continuation and RE_ENDS_IN_CONTINUATION.matchfull(line)):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-            tab_level += tabDepth
+                pre_indent = pre_indent.substr(tab_depth, pre_indent.length - tab_depth)
+            out.append(pre_indent + tab_char * tab_level + line)
+        elif not continuation and line.endswith('\\'):
+            out.append(pre_indent + tab_char * tab_level + line)
+            tab_level += tab_depth
             continuation = true
-        else if (continuation and RE_ENDS_IN_NEW_BLOCK_CONT.matchfull(line)):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-            tab_level += tabDepth
-        else if (continuation and RE_ENDS_IN_NEW_COMMAND_CONT.matchfull(line)):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-            tab_level += tabDepth
-        else if (continuation and RE_IS_ONLY_END_BLOCK_CONT.matchfull(line)):
-            tab_level -= tabDepth
+        elif (continuation and (RE_ENDS_IN_NEW_BLOCK_CONT.match(line) is not None)):
+            out.append(pre_indent + tab_char * tab_level + line)
+            tab_level += tab_depth
+        elif (continuation and (RE_ENDS_IN_NEW_COMMAND_CONT.match(line) is not None)):
+            out.append(pre_indent + tab_char * tab_level + line)
+            tab_level += tab_depth
+        elif (continuation and (RE_IS_ONLY_END_BLOCK_CONT.match(line) is not None)):
+            tab_level -= tab_depth
             if (tab_level < 0):
                 tab_level = 0
-                pre_indent = pre_indent.substr(tabDepth, pre_indent.length - tabDepth)
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-        else if (continuation and (RE_IS_ONLY_END_BLOCK_NOCONTmatchfull(line))):
-            tab_level -= tabDepth
+                pre_indent = pre_indent.substr(tab_depth, pre_indent.length - tab_depth)
+            out.append(pre_indent + tab_char * tab_level + line)
+        elif (continuation and ((RE_IS_ONLY_END_BLOCK_NOCONT.match(line) is not None))):
+            tab_level -= tab_depth
             if (tab_level < 0):
                 tab_level = 0
-                pre_indent = pre_indent.substr(tabDepth, pre_indent.length - tabDepth)
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-            tab_level -= tabDepth
+                pre_indent = pre_indent.substr(tab_depth, pre_indent.length - tab_depth)
+            out.append(pre_indent + tab_char * tab_level + line)
+            tab_level -= tab_depth
             continuation = false
-        else if (continuation and RE_ENDS_IN_END_BLOCK.matchfull(line)):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-            tab_level -= tabDepth
+        elif continuation and line.endswith('}'):
+            out.append(pre_indent + tab_char * tab_level + line)
+            tab_level -= tab_depth
             continuation = false
-        else if (continuation and RE_ENDS_IN_CONTINUATION.matchfull(line)):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-        else if (continuation and not (RE_ENDS_IN_CONTINUATION.matchfull(line))):
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
-            tab_level -= tabDepth
+        elif continuation and line.endswith('\\'):
+            out.append(pre_indent + tab_char * tab_level + line)
+        elif continuation and not line.endswith('\\'):
+            out.append(pre_indent + tab_char * tab_level + line)
+            tab_level -= tab_depth
             continuation = false
         else:
-            out.append(pre_indent + tab_char.repeat(tab_level) + line)
+            print('default')
+            out.append(pre_indent + tab_char * tab_level + line)
         if (tab_level < 0):
             tab_level = 0
-            pre_indent = pre_indent.substr(tabDepth, pre_indent.length - tabDepth)
+            pre_indent = pre_indent.substr(tab_depth, pre_indent.length - tab_depth)
+        print(tab_level)
     return '\n'.join(out)
 
 
@@ -103,3 +116,8 @@ def irule_formatter(view, edit, *args, **kwargs):
     except FormatError as e:
         show_error('Format error:\n' + stderr)
 
+
+
+class FormatIruleCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        irule_formatter(self.view, edit)        

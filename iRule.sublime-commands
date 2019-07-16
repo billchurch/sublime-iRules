@@ -1,6 +1,6 @@
 [
 	{
 		"caption": "iRule: Format Code",
-		"command": "irule_formatter"
+		"command": "format_irule"
 	}
 ]

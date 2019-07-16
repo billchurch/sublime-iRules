@@ -10,7 +10,7 @@
                 "children": [
                     {
                         "caption": "Format Code",
-                        "command": "format",
+                        "command": "format_irule",
                         "args": {}
 					}
 				]
