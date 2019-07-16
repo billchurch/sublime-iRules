@@ -5,9 +5,7 @@ sublime-iRules
 
 iRules Syntax Highlighting for F5 Networks BIG-IP iRules syntax (http://devcentral.f5.com) for the Sublime Text Editor http://www.sublimetext.com
 
-This was created from content found on DevCentral (http://devcentral.f5.com).
-
-* The command completion and syntax highlighting should be complete as of TMOS v11.6 including special highlighting for deprecated commands, functions, and events.
+* The command completion and syntax highlighting should be complete as of TMOS v15.0.
 
 * This includes highlighting and command completion:
 
@@ -17,16 +15,19 @@ This was created from content found on DevCentral (http://devcentral.f5.com).
 
    ![a relative link](../screenshots/when.png?raw=true)
 
-
 * And highligting of deprecated, removed, and illegal functions/events/commands (requires a scheme that supports the "invalid.illegal" and "invalid.deprecated" scopes and not all do. "Monokai" that ships with Sublime Text 3 does, so you can use that to test things out:
 
    ![a relative link](../screenshots/deprecated.png?raw=true)
 
-This bundle was updated on July 29th, 2015 and is currently maintained by Bill Church (https://github.com/billchurch/sublime-iRules).
+* And highlighting of some possible double-substitution issues inside iRules.
 
-Any suggestions or improvements, please feel free to contact me.
+* And formatting of code (⌘+⇧+P -> iRule: Format Code)
 
-The new TCL syntax was pulled from the TCL bundle that ships with Sublime Text 3.
+This bundle was updated on July 16, 2019 and is currently maintained by James Deucker (https://github.com/bitwisecook).
+
+Any suggestions or improvements, please make an issue on the github repo.
+
+This bundle is created from both the built-in Tcl syntax by Sublime and the Visual Studio Code extension also by me (https://github.com/bitwisecook/vscode-iRule).
 
 # Installation (Package Management)
 
@@ -45,7 +46,7 @@ Using Package Control at https://packagecontrol.io/installation:
 - Install sublime-iRules with Package Control. It should pull the correct branch from Github
 
 # Notes
-
-* Verified working with Sublime Text 3 (what I'm targeting from this point).
-
-* Deprecated events, commands, and statements obtained from: https://devcentral.f5.com/wiki/iRules.BIGIP_Commands_by_Version.ashx
+ * I don't yet understand how to properly control the completions so events only happen at when
+ * I haven't yet figured out how to make it so `when` and `proc` can't nest
+ * Many completions are missing
+ * the basic formatter is in and working

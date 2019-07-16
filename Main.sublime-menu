@@ -1,0 +1,20 @@
+[
+    {
+        "caption": "Tools",
+        "id": "tools",
+        "mnemonic": "T",
+        "children": [
+            {
+                "caption": "iRule",
+                "id": "irule",
+                "children": [
+                    {
+                        "caption": "Format Code",
+                        "command": "format_irule",
+                        "args": {}
+					}
+				]
+			}
+		]
+	}
+]
