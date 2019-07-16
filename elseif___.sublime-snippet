@@ -1,0 +1,11 @@
+<snippet>
+    <content><![CDATA[if {${1:condition}} {
+	${2}
+} elseif {${3:condition}} {
+	${4}
+}
+]]></content>
+    <tabTrigger>if</tabTrigger>
+    <scope>source.iRule</scope>
+    <description>if...elseif</description>
+</snippet>
