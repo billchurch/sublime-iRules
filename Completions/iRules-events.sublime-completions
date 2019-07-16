@@ -1,5 +1,5 @@
 {
-    "scope": "entity.name.irule",
+    "scope": "entity.name.event.irule",
     "completions": [
         "ACCESS_ACL_ALLOWED",
         "ACCESS_ACL_DENIED",

@@ -3,8 +3,8 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>when ${1:event} {
-	${2}
+	<string>when ${1:event} ${2:priority ${3} }{
+	${0}
 }</string>
 	<key>name</key>
 	<string>when...</string>

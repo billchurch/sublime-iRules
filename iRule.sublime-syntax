@@ -346,7 +346,7 @@ contexts:
 
   event:
     - match: '^\s*when\s+{{most_likely_irule_events}}'
-      scope: entity.name.irule
+      scope: entity.name.event.irule
 
   expr:
     - match: (?={{end_chars}})
