@@ -16,3 +16,7 @@ This bundle is created from both the built-in Tcl syntax by Sublime and the Visu
 # Installation
 
 # Notes
+ * I don't yet understand how to properly control the completions so events only happen at when
+ * I haven't yet figured out how to make it so `when` and `proc` can't nest
+ * Many completions are missing
+ * I haven't yet ported the code formatter
