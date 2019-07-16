@@ -9,7 +9,7 @@ class FormatError(ValueError):
     pass
 
 RE_COMMENT = re.compile(r'^#')
-RE_ENDS_IN_EMPTY_BLOCK = re.compile(r'\b\{\s*\}$')
+RE_ENDS_IN_EMPTY_BLOCK = re.compile(r'\s+\{\s*\}$')
 RE_ENDS_IN_NEW_BLOCK = re.compile(r'\{$')
 RE_BEGINS_WITH_END_BLOCK = re.compile(r'^\}')
 RE_IS_ONLY_END_BLOCK = re.compile(r'^\}$')
@@ -24,47 +24,43 @@ def format_irule(input_code, pre_indent='', tab_char=' ', tab_depth=4):
     tab_level = 0
     out = []
     continuation = False
-    print('----')
-    print(tab_level)
-    print(tab_depth)
 
     for in_line in input_code.splitlines():
-        line = in_line.strip().decode('utf8')
-        print(line)
+        line = in_line.decode('utf8').strip()
         if line == '':
             out.append('')
-        elif line.startswith('#') is not None:
+        elif RE_COMMENT.search(line) is not None:
             out.append(pre_indent + tab_char * tab_level + line)
-        elif RE_ENDS_IN_EMPTY_BLOCK.match(line) is not None:
+        elif RE_ENDS_IN_EMPTY_BLOCK.search(line) is not None:
             out.append(pre_indent + tab_char * tab_level + line)
-        elif line.endswith('{'):
-            if line.startswith('}'):
+        elif RE_ENDS_IN_NEW_BLOCK.search(line) is not None:
+            if RE_ENDS_IN_END_BLOCK.search(line) is not None:
                 tab_level -= tab_depth
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level += tab_depth
-        elif line == '}' is not None:
+        elif RE_ENDS_IN_END_BLOCK.search(line) is not None:
             tab_level -= tab_depth
             if (tab_level < 0):
                 tab_level = 0
                 pre_indent = pre_indent.substr(tab_depth, pre_indent.length - tab_depth)
             out.append(pre_indent + tab_char * tab_level + line)
-        elif not continuation and line.endswith('\\'):
+        elif not continuation and (RE_ENDS_IN_CONTINUATION.search(line) is not None):
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level += tab_depth
             continuation = true
-        elif (continuation and (RE_ENDS_IN_NEW_BLOCK_CONT.match(line) is not None)):
+        elif (continuation and (RE_ENDS_IN_NEW_BLOCK_CONT.search(line) is not None)):
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level += tab_depth
-        elif (continuation and (RE_ENDS_IN_NEW_COMMAND_CONT.match(line) is not None)):
+        elif (continuation and (RE_ENDS_IN_NEW_COMMAND_CONT.search(line) is not None)):
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level += tab_depth
-        elif (continuation and (RE_IS_ONLY_END_BLOCK_CONT.match(line) is not None)):
+        elif (continuation and (RE_IS_ONLY_END_BLOCK_CONT.search(line) is not None)):
             tab_level -= tab_depth
             if (tab_level < 0):
                 tab_level = 0
                 pre_indent = pre_indent.substr(tab_depth, pre_indent.length - tab_depth)
             out.append(pre_indent + tab_char * tab_level + line)
-        elif (continuation and ((RE_IS_ONLY_END_BLOCK_NOCONT.match(line) is not None))):
+        elif (continuation and (RE_IS_ONLY_END_BLOCK_NOCONT.search(line) is not None)):
             tab_level -= tab_depth
             if (tab_level < 0):
                 tab_level = 0
@@ -72,23 +68,21 @@ def format_irule(input_code, pre_indent='', tab_char=' ', tab_depth=4):
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level -= tab_depth
             continuation = false
-        elif continuation and line.endswith('}'):
+        elif continuation and (RE_ENDS_IN_END_BLOCK.search(line) is not None):
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level -= tab_depth
             continuation = false
-        elif continuation and line.endswith('\\'):
+        elif continuation and (RE_ENDS_IN_CONTINUATION.search(line) is not None):
             out.append(pre_indent + tab_char * tab_level + line)
-        elif continuation and not line.endswith('\\'):
+        elif continuation and (RE_ENDS_IN_CONTINUATION.search(line) is None):
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level -= tab_depth
             continuation = false
         else:
-            print('default')
             out.append(pre_indent + tab_char * tab_level + line)
         if (tab_level < 0):
             tab_level = 0
             pre_indent = pre_indent.substr(tab_depth, pre_indent.length - tab_depth)
-        print(tab_level)
     return '\n'.join(out)
 
 
