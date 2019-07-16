@@ -9,7 +9,7 @@
 	<key>name</key>
 	<string>when...</string>
 	<key>scope</key>
-	<string>source.iRule</string>
+	<string>source.irule</string>
 	<key>tabTrigger</key>
 	<string>when</string>
 	<key>uuid</key>

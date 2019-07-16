@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>Symbol List Indent NS Proc</string>
+	<key>scope</key>
+	<string>meta.namespace.irule entity.name.function.irule, meta.function.irule entity.name.namespace.irule, meta.function.irule meta.function.irule entity.name.function, meta.namespace.irule meta.namespace.irule entity.name.namespace</string>
+	<key>settings</key>
+	<dict>
+		<key>symbolTransformation</key>
+		<string>s/^/  /;</string>
+	</dict>
+</dict>
+</plist>
