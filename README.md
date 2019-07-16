@@ -5,7 +5,7 @@ sublime-iRules
 
 iRules Syntax Highlighting for F5 Networks BIG-IP iRules syntax (http://devcentral.f5.com) for the Sublime Text Editor http://www.sublimetext.com
 
-The command completion and syntax highlighting should be complete as of TMOS v15.0 including special highlighting for deprecated commands, functions, and events. 
+The command completion and syntax highlighting should be complete as of TMOS v15.0 including special highlighting for deprecated commands, functions, events and some double-substitution issues.
 
 This bundle was updated on July 16, 2019 and is currently maintained by James Deucker (https://github.com/bitwisecook/sublime-iRules).
 
