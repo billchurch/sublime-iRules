@@ -127,7 +127,7 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>entity.name</string>
+					<string>entity.name.irule</string>
 				</dict>
 			</dict>
 			<key>match</key>
