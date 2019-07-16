@@ -1,5 +1,5 @@
 {
-    "scope": "source.irule - meta.function.irule - entity.name.function.irule ",
+    "scope": "source.irule - entity.name.function.irule ",
     "completions": [
         "ACCESS_ACL_ALLOWED",
         "ACCESS_ACL_DENIED",

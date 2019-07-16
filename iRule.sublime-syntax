@@ -262,9 +262,6 @@ contexts:
       scope: meta.function.irule
       captures:
         1: keyword.other.irule
-        2: entity.name.function.irule
-        4: keyword.other.irule
-        5: constant.numeric.integer.irule
       set: when-event
     - match: \bwhen\b(?=\s)
       scope: keyword.other.irule

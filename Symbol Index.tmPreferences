@@ -2,12 +2,12 @@
 <plist version="1.0">
 <dict>
 	<key>name</key>
-	<string>Symbol List</string>
+	<string>Symbol Index</string>
 	<key>scope</key>
-	<string>entity.name.namespace.irule</string>
+	<string>source.irule entity.name.function.irule</string>
 	<key>settings</key>
 	<dict>
-		<key>showInSymbolList</key>
+		<key>showInIndexedSymbolList</key>
 		<integer>1</integer>
 	</dict>
 </dict>
