@@ -1,5 +1,5 @@
 {
-    "scope": "keyword.other.irule",
+    "scope": "source.irule - keyword.other.irule",
     "completions": [
         "AAA::acct_result",
         "AAA::acct_send",

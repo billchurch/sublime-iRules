@@ -1,5 +1,34 @@
 # SYNTAX TEST "Packages/iRule/iRule.sublime-syntax"
 
+# ------------ #
+# Simple Event
+# ------------ #
+
+when CLIENT_ACCEPTED {
+# <- keyword.other.irule
+#    ^^^^^^^^^^^^^^^ entity.name.function.irule
+    log local0.debug "nothing"
+#   ^^^ meta.block.irule keyword.other.irule
+#       ^^^^^^^^^^^^^^^^^^^^^^^ meta.block.irule
+}
+
+# -------------- #
+# Priority Event
+# -------------- #
+
+when CLIENT_ACCEPTED priority 350 {
+# <- keyword.other.irule
+#    ^^^^^^^^^^^^^^^ entity.name.function.irule
+#                    ^^^^^^^^ keyword.other.irule
+#                             ^^^ constant.numeric.integer.irule
+    log local0.debug "nothing"
+#   ^^^ meta.block.irule keyword.other.irule
+#       ^^^^^^^^^^^^^^^^^^^^^^^ meta.block.irule
+#                    ^ meta.block.irule string.quoted.double.irule punctuation.definition.string.begin.irule
+#                     ^^^^^^^^ meta.block.irule string.quoted.double.irule
+#                            ^ meta.block.irule string.quoted.double.irule punctuation.definition.string.end.irule
+}
+
 # ----------------- #
 # Line continuation
 # ----------------- #
