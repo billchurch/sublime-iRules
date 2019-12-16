@@ -130,15 +130,6 @@ contexts:
     - match: '\bexpr\b(?=\s)'
       scope: keyword.other.irule
       set: expr
-    - match: \b(namespace)\s+eval\s+({{var_unquoted_string}})
-      captures:
-        1: keyword.other.irule
-        2: entity.name.namespace.irule
-      set:
-        - meta_scope: meta.namespace.irule
-        - match: '(?={{end_chars}})'
-          pop: true
-        - include: commands
     - match: \b(if)\b\s+(\{)
       captures:
         1: keyword.control.irule
