@@ -37,3 +37,13 @@ class PackageFilesTests(unittest.TestCase):
 
     def test_readme_has_no_links_into_other_branches(self):
         self.assertNotIn("../screenshots/", (ROOT / "README.md").read_text(encoding="utf-8"))
+
+    def test_when_is_not_a_snippet(self):
+        # `when` completes to the event list instead (see irules_plugin.py).
+        import xml.etree.ElementTree as ET
+        triggers = [
+            ET.parse(str(p)).getroot().findtext("tabTrigger")
+            for p in (ROOT / "Snippets").glob("*.sublime-snippet")
+        ]
+        self.assertNotIn("when", triggers)
+        self.assertNotIn("whenp", triggers)

@@ -5,8 +5,8 @@ Open any .irul, .irule or .irules file, or pick View > Syntax > iRule.
 
 - iRules: Format Code (Command Palette) re-indents the selection or file.
 - Preferences > Package Settings > iRules > Settings turns on format on save.
-- Type `when ` and press ctrl+space for event completions. Picking one
-  adds `priority 500 {` and a body; Tab moves from 500 into the body.
+- Type `when` and Tab (or a space): the event list opens. Picking an
+  event adds `priority 500 {` and a body; Tab moves from 500 into the body.
 
 Want diagnostics, hover help and go to definition too? See tcl-lsp by
 James Deucker: https://github.com/bitwisecook/tcl-lsp

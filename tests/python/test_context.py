@@ -1,6 +1,13 @@
 import unittest
 
-from irules_lib.context import completing_event_name, event_completion, map_column
+from irules_lib.context import (
+    OPEN_EVENT_LIST,
+    SPACE_THEN_EVENT_LIST,
+    after_text_command,
+    completing_event_name,
+    event_completion,
+    map_column,
+)
 
 
 class CompletingEventNameTests(unittest.TestCase):
@@ -36,6 +43,26 @@ class EventCompletionTests(unittest.TestCase):
     def test_existing_text_after_caret_inserts_only_the_name(self):
         self.assertEqual(event_completion("HTTP_REQUEST", " priority 100 {"), ("HTTP_REQUEST", False))
         self.assertEqual(event_completion("HTTP_REQUEST", " {"), ("HTTP_REQUEST", False))
+
+
+class AfterTextCommandTests(unittest.TestCase):
+    def test_completing_when_adds_space_and_opens_event_list(self):
+        for command in ("commit_completion", "insert_best_completion", "insert_completion"):
+            self.assertEqual(after_text_command(command, {}, "    when"), SPACE_THEN_EVENT_LIST, command)
+
+    def test_typing_space_after_when_opens_event_list(self):
+        self.assertEqual(after_text_command("insert", {"characters": " "}, "when "), OPEN_EVENT_LIST)
+
+    def test_nothing_elsewhere(self):
+        cases = [
+            ("insert", {"characters": " "}, "set when "),
+            ("insert", {"characters": " "}, "when HTTP_REQUEST "),
+            ("insert", {"characters": "n"}, "when"),
+            ("commit_completion", {}, "whenever"),
+            ("left_delete", {}, "when "),
+        ]
+        for command, args, prefix in cases:
+            self.assertIsNone(after_text_command(command, args, prefix), (command, prefix))
 
 
 if __name__ == "__main__":

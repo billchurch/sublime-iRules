@@ -5,7 +5,14 @@ import re
 import sublime
 import sublime_plugin
 
-from .irules_lib.context import completing_event_name, event_completion, map_column
+from .irules_lib.context import (
+    OPEN_EVENT_LIST,
+    SPACE_THEN_EVENT_LIST,
+    after_text_command,
+    completing_event_name,
+    event_completion,
+    map_column,
+)
 from .irules_lib.events import EVENTS
 from .irules_lib.formatter import format_irule
 
@@ -110,7 +117,33 @@ class IruleEditSettingsCommand(sublime_plugin.WindowCommand):
         )
 
 
+# Show only the plugin's completions (the events) in the list `when` opens.
+EVENT_LIST_ARGS = {
+    "api_completions_only": True,
+    "disable_auto_insert": True,
+    "next_completion_if_showing": False,
+}
+
+
 class IruleListener(sublime_plugin.EventListener):
+    _inserting = False
+
+    def on_post_text_command(self, view, command_name, args):
+        # Ignore the space this listener inserts itself.
+        if self._inserting or not is_irule(view) or len(view.sel()) != 1:
+            return
+        point = view.sel()[0].b
+        line_prefix = view.substr(sublime.Region(view.line(point).begin(), point))
+        action = after_text_command(command_name, args, line_prefix)
+        if action == SPACE_THEN_EVENT_LIST:
+            self._inserting = True
+            try:
+                view.run_command("insert", {"characters": " "})
+            finally:
+                self._inserting = False
+        if action in (SPACE_THEN_EVENT_LIST, OPEN_EVENT_LIST):
+            view.run_command("auto_complete", EVENT_LIST_ARGS)
+
     def on_pre_save(self, view):
         if is_irule(view) and sublime.load_settings(SETTINGS_FILE).get("format_on_save", False):
             view.run_command("format_irule", {"whole_file": True})
