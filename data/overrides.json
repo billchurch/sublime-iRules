@@ -1,0 +1,457 @@
+{
+  "_comment": "Hand-maintained corrections to the clouddocs snapshot. See docs/maintaining-data.md.",
+  "commands": {
+    "add": {
+      "ACCESS::ephemeral-auth": {
+        "description": ""
+      },
+      "ANTIFRAUD::username": {
+        "description": ""
+      },
+      "ASM::conviction": {
+        "description": ""
+      },
+      "CACHE::disabled": {
+        "description": ""
+      },
+      "DIAMETER::dynamic_route_insertion": {
+        "description": ""
+      },
+      "DIAMETER::dynamic_route_lookup": {
+        "description": ""
+      },
+      "DNS::log": {
+        "description": ""
+      },
+      "GTP::clone": {
+        "description": ""
+      },
+      "GTP::forward": {
+        "description": ""
+      },
+      "GTP::new": {
+        "description": ""
+      },
+      "GTP::parse": {
+        "description": ""
+      },
+      "GTP::respond": {
+        "description": ""
+      },
+      "LDAP::activation_mode": {
+        "description": ""
+      },
+      "LDAP::disable": {
+        "description": ""
+      },
+      "LDAP::enable": {
+        "description": ""
+      },
+      "OFFBOX::request": {
+        "description": ""
+      },
+      "ONECONNECT::select": {
+        "description": ""
+      },
+      "PLUGIN::disable": {
+        "description": "",
+        "deprecated": true
+      },
+      "PROTOCOL_INSPECTION::disable": {
+        "description": ""
+      },
+      "PROTOCOL_INSPECTION::id": {
+        "description": ""
+      },
+      "PSM::FTP::disable": {
+        "description": ""
+      },
+      "PSM::FTP::enable": {
+        "description": ""
+      },
+      "PSM::HTTP::disable": {
+        "description": ""
+      },
+      "PSM::HTTP::enable": {
+        "description": ""
+      },
+      "PSM::SMTP::disable": {
+        "description": ""
+      },
+      "PSM::SMTP::enable": {
+        "description": ""
+      },
+      "RADIUS::subscriber": {
+        "description": ""
+      },
+      "SIPALG::hairpin": {
+        "description": ""
+      },
+      "SIPALG::hairpin_default": {
+        "description": ""
+      },
+      "SIPALG::nonregister_subscriber_listener": {
+        "description": ""
+      },
+      "SSL::c3d": {
+        "description": ""
+      },
+      "SSL::cert_constraint": {
+        "description": ""
+      },
+      "TAP::action": {
+        "description": ""
+      },
+      "TAP::config": {
+        "description": ""
+      },
+      "TAP::score": {
+        "description": ""
+      },
+      "TMM::cmp_groups": {
+        "description": ""
+      },
+      "X509::pem2der": {
+        "description": ""
+      },
+      "XML::address": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::collect": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::disable": {
+        "description": ""
+      },
+      "XML::element": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::enable": {
+        "description": ""
+      },
+      "XML::event": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::eventid": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::parse": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::payload": {
+        "description": ""
+      },
+      "XML::release": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::soap": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML::subscribe": {
+        "description": "",
+        "deprecated": true
+      },
+      "local_port": {
+        "description": "",
+        "deprecated": true
+      },
+      "remote_port": {
+        "description": "",
+        "deprecated": true
+      }
+    },
+    "deprecate": [
+      "ASM::violation_data",
+      "HTTP::class",
+      "NAME::lookup",
+      "NAME::response",
+      "WAM::disable",
+      "WAM::enable",
+      "accumulate",
+      "client_addr",
+      "client_port",
+      "decode_uri",
+      "findclass",
+      "http_cookie",
+      "http_header",
+      "http_host",
+      "http_method",
+      "http_uri",
+      "http_version",
+      "imid",
+      "ip_protocol",
+      "ip_tos",
+      "ip_ttl",
+      "link_qos",
+      "local_addr",
+      "matchclass",
+      "remote_addr",
+      "server_addr",
+      "server_port",
+      "urlcatblindquery",
+      "urlcatquery",
+      "use",
+      "vlan_id"
+    ],
+    "exclude": [
+      "GTP::header extension",
+      "HTML::tag attribute",
+      "Operators",
+      "connect info"
+    ],
+    "rename": {}
+  },
+  "events": {
+    "add": {
+      "MR_DATA": {
+        "description": ""
+      },
+      "PEM_SUBS_SESS_CREATED": {
+        "description": ""
+      },
+      "PEM_SUBS_SESS_DELETED": {
+        "description": ""
+      },
+      "PEM_SUBS_SESS_UPDATED": {
+        "description": ""
+      },
+      "PROTOCOL_INSPECTION_MATCH": {
+        "description": ""
+      },
+      "RADIUS_AAA_ACCT_REQUEST": {
+        "description": ""
+      },
+      "RADIUS_AAA_ACCT_RESPONSE": {
+        "description": ""
+      },
+      "RADIUS_AAA_AUTH_REQUEST": {
+        "description": ""
+      },
+      "RADIUS_AAA_AUTH_RESPONSE": {
+        "description": ""
+      },
+      "REWRITE_REQUEST": {
+        "description": ""
+      },
+      "REWRITE_RESPONSE": {
+        "description": ""
+      },
+      "TAP_REQUEST": {
+        "description": ""
+      },
+      "TDS_REQUEST": {
+        "description": ""
+      },
+      "TDS_RESPONSE": {
+        "description": ""
+      },
+      "XML_BEGIN_DOCUMENT": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML_BEGIN_ELEMENT": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML_CDATA": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML_END_DOCUMENT": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML_END_ELEMENT": {
+        "description": "",
+        "deprecated": true
+      },
+      "XML_EVENT": {
+        "description": "",
+        "deprecated": true
+      }
+    },
+    "deprecate": [
+      "ASM_REQUEST_VIOLATION",
+      "AUTH_ERROR",
+      "AUTH_FAILURE",
+      "AUTH_SUCCESS",
+      "AUTH_WANTCREDENTIAL",
+      "HTTP_CLASS_FAILED",
+      "HTTP_CLASS_SELECTED",
+      "NAME_RESOLVED"
+    ],
+    "exclude": [
+      "LB::class"
+    ],
+    "rename": {}
+  },
+  "syntax_skip": [
+    "if",
+    "proc",
+    "regexp",
+    "regsub",
+    "timing",
+    "when"
+  ],
+  "tcl_completions": [
+    "append",
+    "array",
+    "binary",
+    "break",
+    "catch",
+    "clock",
+    "concat",
+    "continue",
+    "else",
+    "elseif",
+    "error",
+    "eval",
+    "expr",
+    "for",
+    "foreach",
+    "format",
+    "if",
+    "incr",
+    "info",
+    "join",
+    "lappend",
+    "lindex",
+    "linsert",
+    "list",
+    "llength",
+    "lrange",
+    "lreplace",
+    "lsearch",
+    "lset",
+    "lsort",
+    "regexp",
+    "regsub",
+    "return",
+    "scan",
+    "set",
+    "split",
+    "string",
+    "subst",
+    "switch",
+    "then",
+    "unset",
+    "uplevel",
+    "upvar",
+    "variable",
+    "while"
+  ],
+  "completions_extra": [
+    {
+      "trigger": "class",
+      "contents": "class $0"
+    },
+    {
+      "trigger": "class match",
+      "contents": "class match --$0"
+    },
+    {
+      "trigger": "class search",
+      "contents": "class search --$0"
+    },
+    {
+      "trigger": "class lookup",
+      "contents": "class lookup$0"
+    },
+    {
+      "trigger": "class element",
+      "contents": "class element --$0"
+    },
+    {
+      "trigger": "class type",
+      "contents": "class type$0"
+    },
+    {
+      "trigger": "class exists",
+      "contents": "class exists$0"
+    },
+    {
+      "trigger": "class size",
+      "contents": "class size$0"
+    },
+    {
+      "trigger": "class names",
+      "contents": "class names$0"
+    },
+    {
+      "trigger": "class get",
+      "contents": "class get$0"
+    },
+    {
+      "trigger": "class startsearch",
+      "contents": "class startsearch$0"
+    },
+    {
+      "trigger": "class nextelement",
+      "contents": "class nextelement$0"
+    },
+    {
+      "trigger": "class anymore",
+      "contents": "class anymore$0"
+    },
+    {
+      "trigger": "class donesearch",
+      "contents": "class donesearch$0"
+    },
+    {
+      "trigger": "class match -index",
+      "contents": "class match -index ${1:-all }--$0"
+    },
+    {
+      "trigger": "class match -name",
+      "contents": "class match -name ${1:-all }--$0"
+    },
+    {
+      "trigger": "class match -value",
+      "contents": "class match -value ${1:-all }--$0"
+    },
+    {
+      "trigger": "class match -element",
+      "contents": "class match -element ${1:-all }--$0"
+    },
+    {
+      "trigger": "class search -index",
+      "contents": "class search -index ${1:-all }--$0"
+    },
+    {
+      "trigger": "class search -name",
+      "contents": "class search -name ${1:-all }--$0"
+    },
+    {
+      "trigger": "class search -value",
+      "contents": "class search -value ${1:-all }--$0"
+    },
+    {
+      "trigger": "class search -element",
+      "contents": "class search -element ${1:-all }--$0"
+    },
+    {
+      "trigger": "class element -name",
+      "contents": "class element -name --$0"
+    },
+    {
+      "trigger": "class element -value",
+      "contents": "class element -value --$0"
+    },
+    {
+      "trigger": "class names",
+      "contents": "class names -nocase$0"
+    },
+    {
+      "trigger": "class get",
+      "contents": "class get -nocase$0"
+    }
+  ]
+}
