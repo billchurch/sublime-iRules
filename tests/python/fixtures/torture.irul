@@ -1,0 +1,135 @@
+# ------------------------------------------------------------------------
+# torture.irul: an API gateway iRule that exercises the tricky corners of
+# the iRules syntax, completions and formatter. Comments at the top level
+# may contain unbalanced braces { and brackets [ without harm.
+# ------------------------------------------------------------------------
+
+when RULE_INIT priority 100 {
+    set static::debug 0
+    set static::maint_page {<html><head><title>Maintenance</title></head>
+<body>
+  <pre>
+    We will be right back.
+  </pre>
+</body>
+</html>}
+    set static::allowed_methods [list GET HEAD POST PUT DELETE]
+    set static::api_re {^/api/v([0-9]+)/([^/?]+)}
+}
+
+proc log_debug {msg {level debug}} {
+    if { $static::debug } {
+        log local0.$level "[virtual name]: $msg"
+    }
+}
+
+when CLIENT_ACCEPTED {
+    set client_ip [IP::client_addr]
+    if { [class match -- $client_ip equals blocked_networks] } {
+        reject
+        return
+    }
+    # Rate limit per client, with a brace in this comment {
+    set key "rl:${client_ip}"
+    set hits [table incr -notouch -- $key]
+    if { $hits == 1 } { table timeout -- $key 60 }
+}
+
+when HTTP_REQUEST priority 200 {
+    set host [string tolower [HTTP::host]]
+    set uri [HTTP::uri]
+    set method [HTTP::method]
+
+    if { [lsearch -exact $static::allowed_methods $method] < 0 } {
+        HTTP::respond 405 content "Method $method not allowed on [HTTP::header "Host"]
+Allowed:   GET, HEAD, POST, PUT, DELETE
+" Allow "GET, HEAD, POST, PUT, DELETE" Connection close
+        return
+    }
+
+    # Regex with brackets inside braces: [^/?] and [^]] must not shift indent
+    if { [regexp -nocase -- {^[^]]*\]} $uri] } {
+        call log_debug "odd uri: $uri"
+    }
+
+    if { [regexp -- $static::api_re $uri -> version resource] } {
+        switch -glob -- $resource {
+            "users*" -
+            "accounts*" {
+                pool api_accounts_pool
+            }
+            "health" {
+                HTTP::respond 200 content {{"status":"ok"}} Content-Type "application/json"
+                return
+            }
+            default {
+                pool api_default_pool
+            }
+        }
+    } elseif { $uri starts_with "/static/" } {
+        pool static_pool
+    } else {
+        pool web_pool
+    }
+
+    set cookie_list [list \
+        session \
+        [HTTP::cookie value "tracking"] \
+        [string map {"\"" "" "\{" "(" "\}" ")"} [HTTP::header value "X-Custom"]] \
+    ]
+
+    set payload "multi-line quoted text keeps its [HTTP::header "User-Agent"]
+    exact   spacing
+        on every line"
+
+    if { [HTTP::header exists "X-Legacy"] } {
+        # Deprecated command, should look deprecated:
+        if { [matchclass [IP::client_addr] equals legacy_clients] } {
+            HTTP::header remove "X-Legacy"
+        }
+    }
+
+    set expr_result [expr {$hits * 2}] ;# comment after a command { with a brace
+    LSN::inbound-entry get
+}
+
+when HTTP_RESPONSE {
+    if { [HTTP::status] == 503 } {
+        HTTP::respond 503 content $static::maint_page Retry-After 30
+    }
+    HTTP::header insert "Strict-Transport-Security" "max-age=31536000"
+}
+
+# BIG-IP 21.0 additions
+when JSON_REQUEST {
+    set root [JSON::root]
+    if { [JSON::type $root] eq "object" } {
+        set user [JSON::get $root string]
+        call log_debug "json user: $user"
+    }
+}
+
+when SSE_RESPONSE {
+    SSE::field get data
+}
+
+# A deprecated event, and an unknown one (a typo): the rest of the file must
+# still highlight normally after it.
+when HTTP_CLASS_SELECTED {
+    log local0. "deprecated event"
+}
+
+when HTTP_REQEUST {
+    log local0. "typo in the event name"
+}
+
+when SERVER_CONNECTED {
+    # Double-substitution warnings: unbraced expr, switch without --
+    set bad [expr $hits + 1]
+    switch $uri {
+        "/" { log local0. "root" }
+    }
+    # Disabled Tcl command:
+    exec ls
+    set escaped "a \{ literal \} brace and \[bracket\]"
+}
