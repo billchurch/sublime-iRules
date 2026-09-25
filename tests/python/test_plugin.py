@@ -149,7 +149,7 @@ PLUGIN = load_plugin()
 
 def run_format(text, selections, whole_file=False):
     view = FakeView(text, selections)
-    PLUGIN.FormatIruleCommand(view).run(None, whole_file=whole_file)
+    PLUGIN.IruleFormatCommand(view).run(None, whole_file=whole_file)
     return view
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- The format command is now `irule_format` (was `format_irule`), so all
+  package commands share the `irule_` prefix. Update any key bindings that
+  call `format_irule`.
+- *Preferences: iRules Settings* and the *Package Settings* menu entry use
+  Sublime's built-in `edit_settings` command.
+
+### Added
+- MIT `LICENSE` file.
+
 ## 1.0.0 — 2026-09-25
 
 Requires Sublime Text 4 (build 4107+). Sublime Text 3 stays on 0.9.10.
