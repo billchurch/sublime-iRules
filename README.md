@@ -1,52 +1,113 @@
-sublime-iRules
-==============
+# iRules for Sublime Text
 
-# About
+Syntax highlighting, completions, snippets and a formatter for
+[F5 BIG-IP iRules](https://clouddocs.f5.com/api/irules/) in Sublime Text 4.
 
-iRules Syntax Highlighting for F5 Networks BIG-IP iRules syntax (http://devcentral.f5.com) for the Sublime Text Editor http://www.sublimetext.com
+![Command completions](https://raw.githubusercontent.com/billchurch/sublime-iRules/screenshots/commands.png)
 
-* The command completion and syntax highlighting should be complete as of TMOS v15.1.
+## Features
 
-* This includes highlighting and command completion:
+- **Highlighting for every documented command and event**, generated from
+  F5's iRules reference (current through BIG-IP 21.0). Deprecated commands
+  and events are marked deprecated; Tcl commands disabled in iRules are
+  marked illegal; an unknown event name after `when` is flagged without
+  breaking the rest of the file. (Your color scheme must style
+  `invalid.deprecated` and `invalid.illegal`; the built-in Monokai does.)
+- **Completions** for about 1,000 commands. Each shows a one-line
+  description, the BIG-IP version that introduced it, and a link to F5's
+  reference page.
+- **Event completions only where they belong**: right after `when`.
+- **Double-substitution warnings**: `expr`, `eval` and `if` without braces,
+  and `switch`, `regexp`, `regsub`, `class match` and similar without `--`.
+- **Formatter**: *iRules: Format Code* re-indents the selection, or the whole
+  file, using your view's tab settings. Optional format on save. It never
+  changes the text of a multi-line `"..."` string, or of a braced payload
+  whose content starts on the same line as its `{`
+  (`HTTP::respond 200 content {<html>...`). A payload whose `{` ends its
+  line looks like a code block and is re-indented, so start the content on
+  the brace's line or keep it in a variable.
+- **Snippets**: `if`, `ife`, `ifei`, `for`, `foreach`, `while`, `switch`,
+  `proc`, `when`, `whenp`.
 
-   ![a relative link](../screenshots/commands.png?raw=true)
+![Deprecated commands](https://raw.githubusercontent.com/billchurch/sublime-iRules/screenshots/deprecated.png)
 
-   ![a relative link](../screenshots/if.png?raw=true)
+## Install
 
-   ![a relative link](../screenshots/when.png?raw=true)
+Requires Sublime Text 4 (build 4107 or later).
 
-* And highligting of deprecated, removed, and illegal functions/events/commands (requires a scheme that supports the "invalid.illegal" and "invalid.deprecated" scopes and not all do. "Monokai" that ships with Sublime Text 3 does, so you can use that to test things out:
+1. Open the Command Palette (<kbd>⌘</kbd><kbd>⇧</kbd><kbd>P</kbd> on macOS,
+   <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd> elsewhere).
+2. Run **Package Control: Install Package** and choose **iRules**.
 
-   ![a relative link](../screenshots/deprecated.png?raw=true)
+Files ending in `.irul`, `.irule` or `.irules` open as iRules. For other
+files use **View → Syntax → iRule**.
 
-* And highlighting of some possible double-substitution issues inside iRules.
+Sublime Text 3 users keep receiving version 0.9.10.
 
-* And formatting of code (⌘+⇧+P -> iRule: Format Code)
+> **Installed from the GitHub URL?** Older instructions had you add this
+> repository to Package Control by URL. Remove that repository
+> (**Package Control: Remove Repository**) and the `sublime-iRules` package,
+> then install **iRules** as above so you get updates.
 
-This bundle was updated on December 16, 2019 and is currently maintained by James Deucker (https://github.com/bitwisecook).
+## Settings
 
-Any suggestions or improvements, please make an issue on the github repo.
+**Preferences → Package Settings → iRules → Settings**:
 
-This bundle is created from both the built-in Tcl syntax by Sublime and the Visual Studio Code extension also by me (https://github.com/bitwisecook/vscode-iRule).
+```json
+{
+    // Re-indent the whole file every time an iRule is saved.
+    "format_on_save": false
+}
+```
 
-# Installation (Package Management)
+## Want more? Try tcl-lsp
 
-## New Way
-iRules is now in the the main repository. (preferred)
+This package gives you highlighting, completions and a formatter. If you want
+an editor that understands your iRules, have a look at
+[**tcl-lsp**](https://github.com/bitwisecook/tcl-lsp) by James Deucker
+([@bitwisecook](https://github.com/bitwisecook)).
 
-- go to the command pallete (⌘+⇧+P)
-- select "Package Control: Install Package"
-- type "iRules" and select the iRules package
+James has done more for this package than almost anyone. He maintained it
+through 2019, brought it up to date for TMOS 15.1, and wrote the formatter.
+Before that he built the [vscode-iRule](https://github.com/bitwisecook/vscode-iRule)
+extension for VS Code. tcl-lsp is his language server for Tcl 8.4–9.1,
+F5 iRules, iApps and other Tcl dialects. It adds diagnostics, hover help,
+go to definition and references, rename, signature help, code actions and
+more, and it works in Sublime Text, VS Code, Neovim, Zed, Emacs, Helix and
+JetBrains IDEs. Thank you, James.
 
-## Old Way
-Using Package Control at https://packagecontrol.io/installation:
+To use it alongside this package in Sublime Text:
 
-- Remove the package, if installed manually
-- Add a repository: https://github.com/billchurch/sublime-iRules
-- Install sublime-iRules with Package Control. It should pull the correct branch from Github
+1. Install **LSP** and **LSP-Tcl** with Package Control.
+2. Open **Preferences → Package Settings → LSP → Servers → LSP-Tcl** and
+   add `source.irule` to the selector, so the server also runs on files that
+   use this package's iRule syntax:
 
-# Notes
- * I don't yet understand how to properly control the completions so events only happen at when
- * I haven't yet figured out how to make it so `when` and `proc` can't nest
- * Many completions are missing
- * the basic formatter is in and working
+   ```json
+   {
+       "selector": "source.tcl | source.irule"
+   }
+   ```
+
+tcl-lsp chooses its iRules dialect from the `.irul`, `.irule` and `.irules`
+extensions, so no other setting is needed. See the
+[tcl-lsp Sublime Text guide](https://github.com/bitwisecook/tcl-lsp/blob/main/INSTALL-editors.md#sublime-text)
+for details.
+
+## Contributing
+
+Bug reports and pull requests are welcome at
+<https://github.com/billchurch/sublime-iRules/issues>. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for running the tests and
+[docs/maintaining-data.md](docs/maintaining-data.md) for refreshing the
+command and event lists from F5.
+
+## Credits
+
+Created by Bill Church in 2014. James Deucker
+([@bitwisecook](https://github.com/bitwisecook)) maintained it through 2019
+and rebuilt the syntax and the formatter. Thanks also to Shain Singh and
+everyone who has filed issues.
+
+Command and event descriptions come from F5's
+[iRules reference](https://clouddocs.f5.com/api/irules/).

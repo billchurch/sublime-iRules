@@ -28,3 +28,12 @@ class PackageFilesTests(unittest.TestCase):
         self.assertEqual([p.name for p in snippets if p.suffix != ".sublime-snippet"], [])
         triggers = [ET.parse(str(p)).getroot().findtext("tabTrigger") for p in snippets]
         self.assertEqual(sorted(triggers), sorted(set(triggers)))
+
+    def test_messages_json_points_at_existing_files(self):
+        messages = json.loads((ROOT / "messages.json").read_text(encoding="utf-8"))
+        self.assertIn("install", messages)
+        for path in messages.values():
+            self.assertTrue((ROOT / path).is_file(), path)
+
+    def test_readme_has_no_links_into_other_branches(self):
+        self.assertNotIn("../screenshots/", (ROOT / "README.md").read_text(encoding="utf-8"))
