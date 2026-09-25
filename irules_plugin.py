@@ -1,9 +1,16 @@
 """Sublime Text commands and listeners for the iRules package."""
 
 import re
+import sys
 
 import sublime
 import sublime_plugin
+
+# When the package is updated, Sublime reloads this module but keeps the
+# irules_lib modules it imported earlier. Drop them so the new versions are
+# imported too; otherwise a stale module can break the import below.
+for _name in [name for name in sys.modules if name.startswith(__package__ + ".irules_lib")]:
+    del sys.modules[_name]
 
 from .irules_lib.context import (
     completing_event_name,
