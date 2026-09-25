@@ -3,6 +3,7 @@
 import html
 import json
 import re
+import xml.etree.ElementTree as ElementTree
 
 from .build import DataError
 
@@ -93,7 +94,16 @@ def details(info):
     return " — ".join(parts)
 
 
-def render_completions(database, overrides):
+def snippet_triggers(folder):
+    """Tab triggers of the package's own .sublime-snippet files."""
+    return {
+        ElementTree.parse(str(path)).getroot().findtext("tabTrigger")
+        for path in folder.glob("*.sublime-snippet")
+    }
+
+
+def render_completions(database, overrides, skip_triggers=frozenset()):
+    """Command completions; skip_triggers are words a snippet already offers."""
     items = []
     for name, info in database["commands"].items():
         item = {"trigger": name, "kind": "function", "details": details(info)}
@@ -117,6 +127,7 @@ def render_completions(database, overrides):
         else:
             items.append(dict(extra))
             by_trigger[extra["trigger"]] = items[-1]
+    items = [item for item in items if item["trigger"] not in skip_triggers]
     items.sort(key=lambda item: (item["trigger"].lower(), item["trigger"]))
     document = {"scope": "source.irule - comment - string", "completions": items}
     return json.dumps(document, indent=4, ensure_ascii=False) + "\n"

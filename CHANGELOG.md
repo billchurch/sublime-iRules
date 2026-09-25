@@ -12,7 +12,8 @@ Requires Sublime Text 4 (build 4107+). Sublime Text 3 stays on 0.9.10.
 - Event completions offered only after `when`, and opened automatically once
   `when` is completed or followed by a space; at the end of a line they
   expand to `EVENT priority 500 { }`, with Tab stops on `500` and the body.
-  This replaces the old `when` snippet.
+  The `when` snippet now inserts `when ` and opens the event list, and words
+  that have a snippet no longer also appear as plain completions.
 - Format selection; format on save (`format_on_save`); indentation follows the
   view's tab settings.
 - `.irules` file extension; indentation rules; `ife` and `ifei` snippets.

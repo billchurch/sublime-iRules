@@ -5,6 +5,7 @@ from tests.python.irules_data_helpers import snapshot
 from tools.irules_data.build import DataError, build_database
 from tools.irules_data.render import (
     alternation,
+    snippet_triggers,
     details,
     render_completions,
     render_events_module,
@@ -84,6 +85,26 @@ class RenderTests(unittest.TestCase):
         self.assertEqual(len(pools), 1)
         self.assertEqual(pools[0]["contents"], "pool $0")
         self.assertEqual(pools[0]["annotation"], "iRule")
+
+    def test_triggers_provided_by_snippets_are_left_out(self):
+        doc = json.loads(render_completions(
+            self.db,
+            {"tcl_completions": ["set"], "completions_extra": [{"trigger": "set", "contents": "set $0"}]},
+            skip_triggers={"pool", "set"},
+        ))
+        triggers = {item["trigger"] for item in doc["completions"]}
+        self.assertNotIn("pool", triggers)
+        self.assertNotIn("set", triggers)
+        self.assertIn("HTTP::uri", triggers)
+
+    def test_snippet_triggers_reads_tab_triggers(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as folder:
+            Path(folder, "a.sublime-snippet").write_text(
+                "<snippet><content>x</content><tabTrigger>when</tabTrigger></snippet>", encoding="utf-8")
+            Path(folder, "notes.txt").write_text("ignored", encoding="utf-8")
+            self.assertEqual(snippet_triggers(Path(folder)), {"when"})
 
     def test_events_module_is_valid_python(self):
         namespace = {}
