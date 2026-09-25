@@ -63,3 +63,51 @@ return "Creating aggregator interface $aggrname under element/management element
 #^ - meta.block
 #^ - meta.substitution
 
+# --------------------------------- #
+# Brace strings are not code blocks
+# --------------------------------- #
+
+when HTTP_REQUEST {
+    lappend mylist {abc}
+#                  ^^^^^ string.quoted.brace.irule
+}
+
+# ------------------------------------------ #
+# Unknown events are flagged but parsing continues
+# ------------------------------------------ #
+
+when NOT_A_REAL_EVENT {
+#    ^^^^^^^^^^^^^^^^ invalid.illegal.unknown-event.irule
+    log local0. "still parsed"
+#   ^^^ keyword.other.irule
+}
+
+when CLIENT_ACCEPTED {
+#    ^^^^^^^^^^^^^^^ entity.name.function.irule
+    LSN::inbound-entry get
+#   ^^^^^^^^^^^^^^^^^^ keyword.other.irule
+    if {$a} { set x 1 }
+#             ^^^ keyword.other.irule
+}
+
+# ------------------------------------ #
+# Deprecated events still get a body
+# ------------------------------------ #
+
+when HTTP_CLASS_SELECTED {
+#    ^^^^^^^^^^^^^^^^^^^ invalid.deprecated.irule
+    log local0. "body"
+#   ^^^ keyword.other.irule
+}
+
+# ------------------------------------------- #
+# Data corrections (B4)
+# ------------------------------------------- #
+
+when QOE_PARSE_DONE {
+#    ^^^^^^^^^^^^^^ entity.name.function.irule
+    ROUTE::age
+#   ^^^^^^^^^^ keyword.other.irule
+    ASM::violation_data
+#   ^^^^^^^^^^^^^^^^^^^ invalid.deprecated.irule
+}
