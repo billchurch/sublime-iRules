@@ -65,6 +65,7 @@ class FakeView(object):
         self.viewport_moves = 0
         self.commands = []
         self.listener = None
+        self.popup_visible = False
 
     def syntax(self):
         return types.SimpleNamespace(scope="source.irule")
@@ -109,6 +110,9 @@ class FakeView(object):
         if self.listener is not None:
             self.listener.on_post_text_command(self, name, args or {})
 
+    def is_auto_complete_visible(self):
+        return self.popup_visible
+
     def viewport_position(self):
         return (0.0, 0.0)
 
@@ -128,6 +132,7 @@ def load_plugin():
     sublime.CompletionItem = CompletionItem
     sublime.CompletionList = CompletionList
     sublime.load_settings = lambda name: {}
+    sublime.set_timeout = lambda callback, delay=0: callback()
     sublime_plugin = types.ModuleType("sublime_plugin")
     for name in ("TextCommand", "WindowCommand", "EventListener"):
         setattr(sublime_plugin, name, type(name, (object,), {"__init__": lambda self, view=None: setattr(self, "view", view)}))
@@ -203,25 +208,23 @@ class EventCompletionTests(unittest.TestCase):
 
 
 class WhenOpensEventListTests(unittest.TestCase):
-    def after(self, text, command, args=None):
+    def modified(self, text, popup_visible=False):
         view = FakeView(text, [Region(len(text))])
-        view.listener = PLUGIN.IruleListener()
-        view.listener.on_post_text_command(view, command, args or {})
+        view.popup_visible = popup_visible
+        PLUGIN.IruleListener().on_modified(view)
         return view
 
-    def test_completing_when_inserts_space_and_opens_event_completions(self):
-        view = self.after("when", "commit_completion")
-        self.assertEqual(view.text, "when ")
-        self.assertEqual([name for name, _ in view.commands], ["insert", "auto_complete"])
-        self.assertTrue(view.commands[1][1].get("api_completions_only"))
-
-    def test_typing_space_after_when_opens_event_completions(self):
-        view = self.after("    when ", "insert", {"characters": " "})
+    def test_when_and_space_opens_event_completions(self):
+        view = self.modified("    when ")
         self.assertEqual([name for name, _ in view.commands], ["auto_complete"])
+        self.assertTrue(view.commands[0][1].get("api_completions_only"))
 
-    def test_other_lines_are_left_alone(self):
-        view = self.after("set when ", "insert", {"characters": " "})
-        self.assertEqual(view.commands, [])
+    def test_other_text_is_left_alone(self):
+        for text in ("when", "set when ", "when HTTP_REQUEST "):
+            self.assertEqual(self.modified(text).commands, [], text)
+
+    def test_does_not_reopen_a_visible_popup(self):
+        self.assertEqual(self.modified("when ", popup_visible=True).commands, [])
 
 
 if __name__ == "__main__":

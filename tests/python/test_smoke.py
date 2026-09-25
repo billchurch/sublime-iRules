@@ -47,3 +47,14 @@ class PackageFilesTests(unittest.TestCase):
         ]
         self.assertNotIn("when", triggers)
         self.assertNotIn("whenp", triggers)
+
+    def test_when_completion_inserts_trailing_space(self):
+        completions = json.loads((ROOT / "Completions" / "iRules-commands.sublime-completions").read_text(encoding="utf-8"))
+        whens = [c for c in completions["completions"] if c["trigger"] == "when"]
+        self.assertEqual(len(whens), 1)
+        self.assertEqual(whens[0].get("contents"), "when ")
+
+    def test_completion_triggers_are_unique(self):
+        completions = json.loads((ROOT / "Completions" / "iRules-commands.sublime-completions").read_text(encoding="utf-8"))
+        triggers = [c["trigger"] for c in completions["completions"]]
+        self.assertEqual(sorted(t for t in set(triggers) if triggers.count(t) > 1), [])

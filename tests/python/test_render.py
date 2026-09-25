@@ -76,6 +76,15 @@ class RenderTests(unittest.TestCase):
         self.assertIn("class match", by_trigger)
         self.assertEqual(len(doc["completions"]), len(by_trigger))
 
+    def test_extra_completion_replaces_generated_one_and_keeps_its_details(self):
+        doc = json.loads(render_completions(self.db, {
+            "completions_extra": [{"trigger": "pool", "contents": "pool $0"}],
+        }))
+        pools = [item for item in doc["completions"] if item["trigger"] == "pool"]
+        self.assertEqual(len(pools), 1)
+        self.assertEqual(pools[0]["contents"], "pool $0")
+        self.assertEqual(pools[0]["annotation"], "iRule")
+
     def test_events_module_is_valid_python(self):
         namespace = {}
         exec(render_events_module(self.db), namespace)

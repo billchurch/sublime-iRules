@@ -1196,10 +1196,7 @@
             "trigger": "class",
             "kind": "function",
             "details": "Advanced access of classes — BIG-IP 10.0.0+ — <a href=\"https://clouddocs.f5.com/api/irules/class.html\">docs</a>",
-            "annotation": "iRule"
-        },
-        {
-            "trigger": "class",
+            "annotation": "iRule",
             "contents": "class $0"
         },
         {
@@ -1228,10 +1225,6 @@
         },
         {
             "trigger": "class get",
-            "contents": "class get$0"
-        },
-        {
-            "trigger": "class get",
             "contents": "class get -nocase$0"
         },
         {
@@ -1257,10 +1250,6 @@
         {
             "trigger": "class match -value",
             "contents": "class match -value ${1:-all }--$0"
-        },
-        {
-            "trigger": "class names",
-            "contents": "class names$0"
         },
         {
             "trigger": "class names",
@@ -6124,7 +6113,8 @@
             "trigger": "when",
             "kind": "function",
             "details": "Used to specify an event in an iRule. — BIG-IP 9.0.0+ — <a href=\"https://clouddocs.f5.com/api/irules/when.html\">docs</a>",
-            "annotation": "iRule"
+            "annotation": "iRule",
+            "contents": "when "
         },
         {
             "trigger": "whereis",
