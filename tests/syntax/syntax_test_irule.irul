@@ -134,3 +134,32 @@ when CLIENT_ACCEPTED {
     matchclass $a equals my_class
 #   ^^^^^^^^^^ invalid.deprecated.irule
 }
+
+# ------------------------------------------------------ #
+# regexp/regsub with -- and a variable or bare pattern
+# ------------------------------------------------------ #
+
+when HTTP_REQUEST {
+    if { [regexp -- $static::api_re $uri -> version resource] } {
+#                   ^^^^^^^^^^^^^^^ variable.other.irule
+        switch -glob -- $resource {
+#       ^^^^^^ keyword.control.irule
+            "health" {
+                pool api_default_pool
+#               ^^^^ keyword.other.irule
+            }
+        }
+    }
+    if { [regexp -nocase -- $re $uri] } {
+        pool x
+#       ^^^^ keyword.other.irule
+    }
+    set out [regsub -all -- {a+} $in "b"]
+#                            ^^ string.regexp.irule
+    pool y
+#   ^^^^ keyword.other.irule
+    set ok [regexp -- abc $in]
+#                     ^^^ string.regexp.irule
+    pool z
+#   ^^^^ keyword.other.irule
+}
