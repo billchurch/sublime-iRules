@@ -1,0 +1,10 @@
+iRules 1.0.1
+============
+
+- The format command is renamed from `format_irule` to `irule_format`.
+  If a key binding of yours calls `format_irule`, change it to
+  `irule_format`. The Command Palette and menu entries already use the
+  new name.
+- The package now has an MIT license.
+
+Full notes: https://github.com/billchurch/sublime-iRules/blob/main/CHANGELOG.md
