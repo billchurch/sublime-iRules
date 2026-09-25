@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.1 — 2026-09-25
 
 ### Changed
 - The format command is now `irule_format` (was `format_irule`), so all
