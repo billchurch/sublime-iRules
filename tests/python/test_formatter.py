@@ -98,6 +98,76 @@ class FormatIruleTests(unittest.TestCase):
     def test_unbalanced_closers_never_go_negative(self):
         self.assertEqual(fmt(["}", "}", "pool p"]), ["}", "}", "pool p"])
 
+    def test_quotes_inside_command_substitution_do_not_end_the_string(self):
+        source = [
+            "when X {",
+            'HTTP::respond 200 content "<html>[HTTP::header "Host"]',
+            "  <pre>",
+            "    keep",
+            "  </pre>",
+            '</html>"',
+            "pool p",
+            "}",
+        ]
+        expected = ["when X {", "    " + source[1]] + source[2:6] + ["    pool p", "}"]
+        self.assertEqual(fmt(source), expected)
+
+    def test_balanced_nested_quotes_do_not_leave_a_string_open(self):
+        self.assertEqual(
+            fmt(["when X {", 'log local0. "UA: [HTTP::header "User-Agent"] "', "pool p", "}"]),
+            ["when X {", '    log local0. "UA: [HTTP::header "User-Agent"] "', "    pool p", "}"],
+        )
+
+    def test_trailing_spaces_inside_an_open_string_are_kept(self):
+        self.assertEqual(
+            fmt(["when X {", 'HTTP::respond 200 content "a   ', 'b"', "}"]),
+            ["when X {", '    HTTP::respond 200 content "a   ', 'b"', "}"],
+        )
+
+    def test_braced_payload_that_starts_on_the_same_line_is_left_verbatim(self):
+        source = [
+            "when X {",
+            "HTTP::respond 200 content {<html>",
+            "  <pre>",
+            "    keep",
+            "  </pre>",
+            "</html>}",
+            "pool p",
+            "}",
+        ]
+        expected = ["when X {", "    " + source[1]] + source[2:6] + ["    pool p", "}"]
+        self.assertEqual(fmt(source), expected)
+
+    def test_brackets_inside_braced_words_do_not_change_depth(self):
+        self.assertEqual(
+            fmt(["when X {", "if {[regexp {^[^]]+} $x]} {", "pool a", "}", "pool b", "}"]),
+            ["when X {", "    if {[regexp {^[^]]+} $x]} {", "        pool a", "    }", "    pool b", "}"],
+        )
+
+    def test_lone_quote_inside_braced_word_does_not_open_a_string(self):
+        self.assertEqual(
+            fmt(["when X {", 'set q { " }', "pool p", "}"]),
+            ["when X {", '    set q { " }', "    pool p", "}"],
+        )
+
+    def test_top_level_inline_comment_braces_are_ignored(self):
+        self.assertEqual(
+            fmt(["set x 1 ;# {", "when X {", "pool p", "}"]),
+            ["set x 1 ;# {", "when X {", "    pool p", "}"],
+        )
+
+    def test_outdent_lets_a_selection_close_an_enclosing_block(self):
+        self.assertEqual(
+            fmt(["pool a", "pool b", "}"], base_indent="    ", outdent=True),
+            ["    pool a", "    pool b", "}"],
+        )
+
+    def test_outdent_selection_starting_with_else(self):
+        self.assertEqual(
+            fmt(["} else {", "pool b", "}"], base_indent="    ", outdent=True),
+            ["    } else {", "        pool b", "    }"],
+        )
+
     def test_formatting_is_idempotent(self):
         source = "\n".join([
             "when HTTP_REQUEST priority 100 {",

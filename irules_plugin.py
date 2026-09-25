@@ -5,7 +5,7 @@ import re
 import sublime
 import sublime_plugin
 
-from .irules_lib.context import completing_event_name
+from .irules_lib.context import completing_event_name, map_column
 from .irules_lib.events import EVENTS
 from .irules_lib.formatter import format_irule
 
@@ -30,19 +30,28 @@ def indent_unit(view):
 
 
 def _format_targets(view, whole_file):
-    """[(region, base_indent)] to format, merged so no two regions overlap."""
+    """[(region, base_indent, outdent)] to format, merged so no two overlap."""
     selections = [region for region in view.sel() if not region.empty()]
     if whole_file or not selections:
-        return [(sublime.Region(0, view.size()), "")]
+        return [(sublime.Region(0, view.size()), "", False)]
     targets = []
     for region in selections:
-        lines = view.line(region)
+        begin, end = region.begin(), region.end()
+        # A selection made with shift+down ends at column 0 of the next
+        # line; that line is not part of it.
+        if view.rowcol(end)[1] == 0 and view.rowcol(begin)[0] != view.rowcol(end)[0]:
+            end -= 1
+        lines = view.line(sublime.Region(begin, end))
         if targets and targets[-1][0].end() >= lines.begin():
-            targets[-1] = (targets[-1][0].cover(lines), targets[-1][1])
+            targets[-1] = (targets[-1][0].cover(lines), targets[-1][1], True)
             continue
         base = LEADING_WHITESPACE_RE.match(view.substr(lines)).group(0)
-        targets.append((lines, base))
+        targets.append((lines, base, True))
     return targets
+
+
+def _line_text(view, row):
+    return view.substr(view.line(view.text_point(row, 0)))
 
 
 class FormatIruleCommand(sublime_plugin.TextCommand):
@@ -57,20 +66,35 @@ class FormatIruleCommand(sublime_plugin.TextCommand):
     def run(self, edit, whole_file=False):
         view = self.view
         indent = indent_unit(view)
-        carets = [view.rowcol(region.b) for region in view.sel()]
+        # The formatter never adds or removes lines, so rows stay valid.
+        ends = [(view.rowcol(region.a), view.rowcol(region.b)) for region in view.sel()]
+        rows = {row for pair in ends for row, _ in pair}
+        old_lines = {row: _line_text(view, row) for row in rows}
         viewport = view.viewport_position()
+        changed = False
         # Replace from the end so earlier regions keep their offsets.
-        for region, base in reversed(_format_targets(view, whole_file)):
+        for region, base, outdent in reversed(_format_targets(view, whole_file)):
             original = view.substr(region)
-            formatted = format_irule(original, indent=indent, base_indent=base)
+            formatted = format_irule(original, indent=indent, base_indent=base, outdent=outdent)
             if formatted != original:
                 view.replace(edit, region, formatted)
-        last_row = view.rowcol(view.size())[0]
+                changed = True
+        if not changed:
+            return
         view.sel().clear()
-        for row, col in carets:
-            line = view.line(view.text_point(min(row, last_row), 0))
-            view.sel().add(min(line.begin() + col, line.end()))
+        for (a_row, a_col), (b_row, b_col) in ends:
+            view.sel().add(
+                sublime.Region(
+                    self._point(a_row, a_col, old_lines[a_row]),
+                    self._point(b_row, b_col, old_lines[b_row]),
+                )
+            )
         view.set_viewport_position(viewport, False)
+
+    def _point(self, row, column, old_line):
+        line = self.view.line(self.view.text_point(row, 0))
+        new_column = map_column(column, old_line, self.view.substr(line))
+        return min(line.begin() + new_column, line.end())
 
 
 class IruleEditSettingsCommand(sublime_plugin.WindowCommand):
