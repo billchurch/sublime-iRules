@@ -186,33 +186,14 @@ contexts:
           pop: true
         # Consume the switches (https://www.irule.tk/man/tcl8.4/TclCmd/regexp.htm)
         - match: '\s+-(about|all|expanded|indices|inline|linestop|lineanchor|line|nocase|start\s+\b[0-9]+)\b(?=\s)'
-        # The next non-space element will be a regex string
-        - match: '(?=\{|\s+--\s+)'
-          set:
-            - match: \{
-              set:
-                - meta_content_scope: string.regexp.irule
-                - match: \}
-                  pop: true
-                - include: regexp-braces
-            - match: '(?=")'
-              set:
-                - include: strings
-                # One of these characters indicates the string is complete
-                - match: '(?={{inline_end_chars}})'
-                  pop: true
-        - match: '(?=")'
-          set:
-            - include: strings
-            # One of these characters indicates the string is complete
-            - match: '(?={{inline_end_chars}})'
-              pop: true
+        # `--` ends the switches; the pattern follows it.
+        - match: '\s+(--)(?=\s)'
+          captures:
+            1: keyword.operator.irule
+          set: regexp-pattern
+        # Otherwise the next non-space element is the pattern.
         - match: '(?=\S)'
-          set:
-            - meta_content_scope: string.regexp.irule
-            # One of these characters indicates the string is complete
-            - match: '(?={{inline_end_chars}})'
-              pop: true
+          set: regexp-pattern
     - match: (?=#)
       set: comments
     - match: '(?={{var_unquoted_string}})'
@@ -224,6 +205,34 @@ contexts:
           pop: true
     - match: '(?=\S)'
       pop: true
+
+  regexp-pattern:
+    - match: '(?={{end_chars}})'
+      pop: true
+    - match: \{
+      set:
+        - meta_content_scope: string.regexp.irule
+        - match: \}
+          pop: true
+        - include: regexp-braces
+    - match: '(?=")'
+      set:
+        - include: strings
+        # One of these characters indicates the string is complete
+        - match: '(?={{inline_end_chars}})'
+          pop: true
+    # A pattern held in a variable: $re or ${re}
+    - match: '(?=\$)'
+      set:
+        - include: variable
+        - match: ''
+          pop: true
+    - match: '(?=\S)'
+      set:
+        - meta_content_scope: string.regexp.irule
+        # One of these characters indicates the string is complete
+        - match: '(?={{inline_end_chars}})'
+          pop: true
 
   regexp-braces:
     - match: \{
