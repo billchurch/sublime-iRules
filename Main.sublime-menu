@@ -1,20 +1,30 @@
 [
     {
-        "caption": "Tools",
         "id": "tools",
-        "mnemonic": "T",
         "children": [
             {
-                "caption": "iRule",
-                "id": "irule",
+                "caption": "iRules",
+                "id": "irules",
+                "children": [
+                    { "caption": "Format Code", "command": "format_irule" }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "preferences",
+        "children": [
+            {
+                "id": "package-settings",
                 "children": [
                     {
-                        "caption": "Format Code",
-                        "command": "format_irule",
-                        "args": {}
-					}
-				]
-			}
-		]
-	}
+                        "caption": "iRules",
+                        "children": [
+                            { "caption": "Settings", "command": "irule_edit_settings" }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
 ]

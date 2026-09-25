@@ -1,13 +1,3 @@
 [
-	{
-		"id": "irule",
-		"caption": "iRules",
-		"children": [
-			{
-				"id": "format",
-				"caption": "Format Code",
-				"command": "format_irule"
-			}
-		]
-	}
+    { "caption": "iRules: Format Code", "command": "format_irule" }
 ]

@@ -1,0 +1,4 @@
+{
+    // Re-indent the whole file every time an iRule is saved.
+    "format_on_save": false
+}

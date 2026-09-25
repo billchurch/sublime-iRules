@@ -1,6 +1,4 @@
 [
-	{
-		"caption": "iRule: Format Code",
-		"command": "format_irule"
-	}
+    { "caption": "iRules: Format Code", "command": "format_irule" },
+    { "caption": "Preferences: iRules Settings", "command": "irule_edit_settings" }
 ]
