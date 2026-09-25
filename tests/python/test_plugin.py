@@ -227,5 +227,18 @@ class WhenOpensEventListTests(unittest.TestCase):
         self.assertEqual(self.modified("when ", popup_visible=True).commands, [])
 
 
+class ReloadTests(unittest.TestCase):
+    def test_reload_replaces_stale_irules_lib_modules(self):
+        # Sublime reloads irules_plugin when the package updates but keeps
+        # previously imported irules_lib modules; an old one must not break
+        # the import (it did: "cannot import name 'event_completion'").
+        stale = types.ModuleType("irules_pkg.irules_lib.context")
+        sys.modules["irules_pkg.irules_lib.context"] = stale
+        sys.modules.pop("irules_pkg.irules_plugin", None)
+        plugin = importlib.import_module("irules_pkg.irules_plugin")
+        self.assertIsNot(sys.modules["irules_pkg.irules_lib.context"], stale)
+        self.assertTrue(callable(plugin.should_open_event_list))
+
+
 if __name__ == "__main__":
     unittest.main()
