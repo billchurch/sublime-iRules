@@ -14,3 +14,10 @@ class PackageFilesTests(unittest.TestCase):
 
     def test_python_version_file_selects_modern_host(self):
         self.assertEqual((ROOT / ".python-version").read_text().strip(), "3.8")
+
+    def test_syntax_header(self):
+        text = (ROOT / "iRule.sublime-syntax").read_text(encoding="utf-8")
+        head = text.split("contexts:")[0]
+        self.assertIn("\nversion: 2\n", head)
+        for extension in ("irul", "irule", "irules"):
+            self.assertIn("\n  - %s\n" % extension, head)
