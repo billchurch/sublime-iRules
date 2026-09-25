@@ -1,0 +1,16 @@
+iRules 1.0.0
+============
+
+- Every command and event in F5's iRules reference, through BIG-IP 21.0
+  (JSON::*, SSE::*, ECA::*, JSON_REQUEST, SSE_RESPONSE and more).
+- Completions show a description, the introducing BIG-IP version and a
+  docs link.
+- New formatter: formats the selection or the file, follows your tab
+  settings, optional format on save.
+- Fixed: an unknown event after `when` broke highlighting for the rest
+  of the file.
+
+If you installed this package by adding its GitHub URL as a repository,
+remove that repository and reinstall "iRules" from Package Control.
+
+Full notes: https://github.com/billchurch/sublime-iRules/blob/master/CHANGELOG.md
