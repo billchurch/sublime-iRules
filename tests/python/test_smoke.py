@@ -38,21 +38,22 @@ class PackageFilesTests(unittest.TestCase):
     def test_readme_has_no_links_into_other_branches(self):
         self.assertNotIn("../screenshots/", (ROOT / "README.md").read_text(encoding="utf-8"))
 
-    def test_when_is_not_a_snippet(self):
-        # `when` completes to the event list instead (see irules_plugin.py).
+    def test_when_snippet_inserts_when_and_a_space(self):
+        # The space is what opens the event list (see irules_plugin.py).
         import xml.etree.ElementTree as ET
-        triggers = [
+        root = ET.parse(str(ROOT / "Snippets" / "when.sublime-snippet")).getroot()
+        self.assertEqual(root.findtext("tabTrigger"), "when")
+        self.assertEqual(root.findtext("content"), "when $0")
+
+    def test_no_completion_duplicates_a_snippet(self):
+        import xml.etree.ElementTree as ET
+        snippet_triggers = {
             ET.parse(str(p)).getroot().findtext("tabTrigger")
             for p in (ROOT / "Snippets").glob("*.sublime-snippet")
-        ]
-        self.assertNotIn("when", triggers)
-        self.assertNotIn("whenp", triggers)
-
-    def test_when_completion_inserts_trailing_space(self):
+        }
         completions = json.loads((ROOT / "Completions" / "iRules-commands.sublime-completions").read_text(encoding="utf-8"))
-        whens = [c for c in completions["completions"] if c["trigger"] == "when"]
-        self.assertEqual(len(whens), 1)
-        self.assertEqual(whens[0].get("contents"), "when ")
+        triggers = {c["trigger"] for c in completions["completions"]}
+        self.assertEqual(sorted(triggers & snippet_triggers), [])
 
     def test_completion_triggers_are_unique(self):
         completions = json.loads((ROOT / "Completions" / "iRules-commands.sublime-completions").read_text(encoding="utf-8"))

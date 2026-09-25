@@ -2338,16 +2338,6 @@
             "annotation": "FLOWTABLE"
         },
         {
-            "trigger": "for",
-            "annotation": "Tcl",
-            "kind": "keyword"
-        },
-        {
-            "trigger": "foreach",
-            "annotation": "Tcl",
-            "kind": "keyword"
-        },
-        {
             "trigger": "format",
             "annotation": "Tcl",
             "kind": "keyword"
@@ -2883,11 +2873,6 @@
             "kind": "function",
             "details": "sets or returns the ICAP request uri. — BIG-IP 11.3.0+ — <a href=\"https://clouddocs.f5.com/api/irules/ICAP__uri.html\">docs</a>",
             "annotation": "ICAP"
-        },
-        {
-            "trigger": "if",
-            "annotation": "Tcl",
-            "kind": "keyword"
         },
         {
             "trigger": "ifile",
@@ -4229,12 +4214,6 @@
             "annotation": "iRule"
         },
         {
-            "trigger": "proc",
-            "kind": "function",
-            "details": "defines a procedure which is called by the call command — BIG-IP 11.4.0+ — <a href=\"https://clouddocs.f5.com/api/irules/proc.html\">docs</a>",
-            "annotation": "iRule"
-        },
-        {
             "trigger": "PROFILE::access",
             "kind": "function",
             "details": "Returns the value of an access profile setting. — BIG-IP 10.0.0+ — <a href=\"https://clouddocs.f5.com/api/irules/PROFILE__access.html\">docs</a>",
@@ -5444,11 +5423,6 @@
             "annotation": "iRule"
         },
         {
-            "trigger": "switch",
-            "annotation": "Tcl",
-            "kind": "keyword"
-        },
-        {
             "trigger": "table",
             "kind": "function",
             "details": "The table command provides enhanced access to the session table — BIG-IP 10.1.0+ — <a href=\"https://clouddocs.f5.com/api/irules/table.html\">docs</a>",
@@ -6110,22 +6084,10 @@
             "annotation": "WEBSSO"
         },
         {
-            "trigger": "when",
-            "kind": "function",
-            "details": "Used to specify an event in an iRule. — BIG-IP 9.0.0+ — <a href=\"https://clouddocs.f5.com/api/irules/when.html\">docs</a>",
-            "annotation": "iRule",
-            "contents": "when "
-        },
-        {
             "trigger": "whereis",
             "kind": "function",
             "details": "Returns geographical information on an IP address. — BIG-IP 10.1.0+ — <a href=\"https://clouddocs.f5.com/api/irules/whereis.html\">docs</a>",
             "annotation": "iRule"
-        },
-        {
-            "trigger": "while",
-            "annotation": "Tcl",
-            "kind": "keyword"
         },
         {
             "trigger": "WS::collect",

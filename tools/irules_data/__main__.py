@@ -11,6 +11,7 @@ from .render import (
     render_completions,
     render_events_module,
     render_syntax,
+    snippet_triggers,
     syntax_lists,
     tcl_names,
 )
@@ -21,6 +22,7 @@ OVERRIDES = ROOT / "data" / "overrides.json"
 SYNTAX = ROOT / "iRule.sublime-syntax"
 COMPLETIONS = ROOT / "Completions" / "iRules-commands.sublime-completions"
 EVENTS_MODULE = ROOT / "irules_lib" / "events.py"
+SNIPPETS = ROOT / "Snippets"
 
 
 def _read(path):
@@ -71,7 +73,7 @@ def generated_outputs():
     skip = set(overrides.get("syntax_skip", [])) | tcl_names(syntax_text)
     return {
         SYNTAX: render_syntax(syntax_text, syntax_lists(database, skip)),
-        COMPLETIONS: render_completions(database, overrides),
+        COMPLETIONS: render_completions(database, overrides, snippet_triggers(SNIPPETS)),
         EVENTS_MODULE: render_events_module(database),
     }
 

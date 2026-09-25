@@ -30,8 +30,9 @@ Syntax highlighting, completions, snippets and a formatter for
   (`HTTP::respond 200 content {<html>...`). A payload whose `{` ends its
   line looks like a code block and is re-indented, so start the content on
   the brace's line or keep it in a variable.
-- **Snippets**: `if`, `ife`, `ifei`, `for`, `foreach`, `while`, `switch`,
-  `proc`.
+- **Snippets**: `when` (opens the event list), `if`, `ife`, `ifei`, `for`,
+  `foreach`, `while`, `switch`, `proc`. A word with a snippet appears once in
+  the completion list, as the snippet.
 
 ![Deprecated commands](https://raw.githubusercontent.com/billchurch/sublime-iRules/screenshots/deprecated.png)
 
