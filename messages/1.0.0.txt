@@ -13,4 +13,4 @@ iRules 1.0.0
 If you installed this package by adding its GitHub URL as a repository,
 remove that repository and reinstall "iRules" from Package Control.
 
-Full notes: https://github.com/billchurch/sublime-iRules/blob/master/CHANGELOG.md
+Full notes: https://github.com/billchurch/sublime-iRules/blob/main/CHANGELOG.md
