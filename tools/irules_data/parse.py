@@ -6,8 +6,12 @@ import re
 BASE_URL = "https://clouddocs.f5.com/api/irules/"
 
 _SECTION_RE = re.compile(r'<div class="section" id="([^"]+)">')
+# Link text may carry inline markup such as <code>; _clean strips it. Only
+# links to other pages count: in-page anchors ("#...") are table-of-contents.
+# Some hrefs lack ".html" (UDP__max_buf_pkts), so do not require it.
 _ITEM_RE = re.compile(
-    r'<li><a class="reference external" href="([^"]+)">([^<]+)</a>(.*?)</li>', re.S
+    r'<li><a class="reference (?:external|internal)" href="([^"#][^"]*)">(.*?)</a>(.*?)</li>',
+    re.S,
 )
 _TAG_RE = re.compile(r"<[^>]+>")
 _VERSION_RE = re.compile(r"BIGIP_LTM_v(\d+(?:_\d+)*)\.html")

@@ -75,3 +75,15 @@ class ParseTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MarkupToleranceTests(unittest.TestCase):
+    def test_link_text_with_inner_markup_is_not_dropped(self):
+        page = (
+            '<article><div class="section" id="http"><ul>'
+            '<li><a class="reference external" href="HTTP__foo.html"><code>HTTP::foo</code></a> - foo</li>'
+            '<li><a class="reference internal" href="HTTP__bar.html">HTTP::bar</a> - bar</li>'
+            '<li><a class="reference internal" href="#anchor">Not a page</a></li>'
+            "</ul></div></article>"
+        )
+        self.assertEqual(sorted(e["name"] for e in parse_master_list(page)), ["HTTP::bar", "HTTP::foo"])

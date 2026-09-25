@@ -5,8 +5,24 @@ import re
 NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:::[A-Za-z0-9_][A-Za-z0-9_-]*)*$")
 
 
+# A refresh that loses more than this share of entries almost certainly
+# means clouddocs changed its markup, not that F5 removed the commands.
+MAX_SHRINK = 0.1
+
+
 class DataError(ValueError):
     pass
+
+
+def check_snapshot_size(old, new):
+    """Raise DataError if new has far fewer commands or events than old."""
+    for kind in ("commands", "events"):
+        before, after = len(old.get(kind, [])), len(new.get(kind, []))
+        if after < before * (1 - MAX_SHRINK):
+            raise DataError(
+                "%s: %d entries, previously %d; has the clouddocs markup changed?"
+                % (kind, after, before)
+            )
 
 
 def _info(description="", url=None, deprecated=False, since=None):

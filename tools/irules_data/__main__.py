@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 
-from .build import DataError, build_database
+from .build import DataError, build_database, check_snapshot_size
 from .fetch import scrape
 from .render import (
     render_completions,
@@ -41,6 +41,11 @@ def cmd_fetch(check):
     text = json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n"
     old_text = _read(SNAPSHOT)
     if not check:
+        try:
+            check_snapshot_size(json.loads(old_text) if old_text else {}, snapshot)
+        except DataError as error:
+            print("error: %s" % error, file=sys.stderr)
+            return 2
         _write(SNAPSHOT, text)
         return 0
     if text == old_text:

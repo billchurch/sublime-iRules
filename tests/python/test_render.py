@@ -88,3 +88,10 @@ class RenderTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EmptyListTests(unittest.TestCase):
+    def test_empty_generated_list_is_an_error_not_an_empty_regex(self):
+        database = build_database(snapshot(["HTTP::uri", "pool", ("matchclass", True)], []), {})
+        with self.assertRaisesRegex(DataError, "most_likely_irule_events"):
+            render_syntax(SYNTAX, syntax_lists(database, set()))

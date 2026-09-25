@@ -62,6 +62,10 @@ def alternation(names):
 
 def render_syntax(syntax_text, lists):
     for variable in GENERATED_SYNTAX_VARIABLES:
+        if not lists[variable]:
+            # An empty alternation would produce patterns like \b()\b that
+            # match everywhere; it means the data or its parsing broke.
+            raise DataError("syntax variable %r would be empty" % variable)
         replacement = alternation(lists[variable])
         syntax_text, count = _variable_re(variable).subn(
             lambda m: m.group(1) + "'" + replacement + "'", syntax_text
