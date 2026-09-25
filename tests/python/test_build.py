@@ -43,6 +43,20 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class StaleOverrideTests(unittest.TestCase):
+    def test_exclude_of_a_name_not_upstream_is_an_error(self):
+        with self.assertRaisesRegex(DataError, "commands.exclude: Gone"):
+            build_database(snapshot(["HTTP::uri"]), {"commands": {"exclude": ["Gone"]}})
+
+    def test_rename_of_a_name_not_upstream_is_an_error(self):
+        with self.assertRaisesRegex(DataError, "commands.rename: Gone"):
+            build_database(snapshot(["HTTP::uri"]), {"commands": {"rename": {"Gone": "HTTP::gone"}}})
+
+    def test_rename_onto_an_upstream_name_is_an_error(self):
+        with self.assertRaisesRegex(DataError, "HTTP::uri already exists"):
+            build_database(snapshot(["HTTP::uri", "HTTP::url"]), {"commands": {"rename": {"HTTP::url": "HTTP::uri"}}})
+
+
 class SnapshotShrinkTests(unittest.TestCase):
     def test_large_drop_in_entries_is_an_error(self):
         from tools.irules_data.build import check_snapshot_size

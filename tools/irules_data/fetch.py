@@ -32,7 +32,12 @@ def scrape(fetch=fetch_page):
     byte-identical output and `fetch --check` stays quiet.
     """
     introduced = {}
-    for version, filename in parse_version_index(fetch("BIGIP_Commands_by_Version.html")):
+    versions = sorted(
+        parse_version_index(fetch("BIGIP_Commands_by_Version.html")),
+        key=lambda pair: tuple(int(part) for part in pair[0].split(".")),
+    )
+    # Oldest first, so each name keeps the version that introduced it.
+    for version, filename in versions:
         changes = parse_version_page(fetch(filename))
         for name in changes["commands"] + changes["events"]:
             introduced.setdefault(name, version)
