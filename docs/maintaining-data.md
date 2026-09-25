@@ -35,5 +35,16 @@ lists the added and removed names.
 | `tcl_completions` | Tcl built-ins to offer as completions |
 | `completions_extra` | hand-written completion snippets, copied verbatim |
 
-`render` stops with an error when an override has gone stale, for example
-an `add` entry that F5 has since documented. Delete the override it names.
+`render` stops with an error, naming the override to fix, when:
+
+- an override has gone stale: an `add` entry F5 has since documented, or an
+  `exclude`, `rename` or `deprecate` entry for a name that no longer exists;
+- a `rename` would overwrite a name F5 already documents;
+- a generated list would be empty;
+- a name matched earlier by the grammar would hide part of a later one (for
+  example a deprecated `LSN::inbound` in front of a valid `LSN::inbound-entry`).
+
+`fetch` refuses a snapshot that lost more than 10% of its entries, which
+usually means F5 changed the page markup. It exits with status 3, not 1,
+when clouddocs cannot be reached, so the weekly drift job's log shows a
+network problem rather than a docs change.
