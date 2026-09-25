@@ -21,3 +21,10 @@ class PackageFilesTests(unittest.TestCase):
         self.assertIn("\nversion: 2\n", head)
         for extension in ("irul", "irule", "irules"):
             self.assertIn("\n  - %s\n" % extension, head)
+
+    def test_snippets_are_sublime_snippets_with_unique_triggers(self):
+        import xml.etree.ElementTree as ET
+        snippets = sorted((ROOT / "Snippets").iterdir())
+        self.assertEqual([p.name for p in snippets if p.suffix != ".sublime-snippet"], [])
+        triggers = [ET.parse(str(p)).getroot().findtext("tabTrigger") for p in snippets]
+        self.assertEqual(sorted(triggers), sorted(set(triggers)))

@@ -1,0 +1,12 @@
+<snippet>
+	<content><![CDATA[if { ${1:condition} } {
+	${2}
+} elseif { ${3:condition} } {
+	${4}
+} else {
+	${0}
+}]]></content>
+	<tabTrigger>ifei</tabTrigger>
+	<scope>source.irule</scope>
+	<description>if … elseif … else</description>
+</snippet>
