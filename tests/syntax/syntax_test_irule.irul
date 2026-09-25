@@ -111,3 +111,26 @@ when QOE_PARSE_DONE {
     ASM::violation_data
 #   ^^^^^^^^^^^^^^^^^^^ invalid.deprecated.irule
 }
+
+# ------------------------------------- #
+# BIG-IP 21.0 additions (from clouddocs)
+# ------------------------------------- #
+
+when JSON_REQUEST {
+#    ^^^^^^^^^^^^ entity.name.function.irule
+    set root [JSON::root]
+#             ^^^^^^^^^^ keyword.other.irule
+}
+
+when SSE_RESPONSE {
+#    ^^^^^^^^^^^^ entity.name.function.irule
+    SSE::field get data
+#   ^^^^^^^^^^ keyword.other.irule
+}
+
+when CLIENT_ACCEPTED {
+    IKE::san_dns
+#   ^^^^^^^^^^^^ keyword.other.irule
+    matchclass $a equals my_class
+#   ^^^^^^^^^^ invalid.deprecated.irule
+}
