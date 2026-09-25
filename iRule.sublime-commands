@@ -1,4 +1,8 @@
 [
-    { "caption": "iRules: Format Code", "command": "format_irule" },
-    { "caption": "Preferences: iRules Settings", "command": "irule_edit_settings" }
+    { "caption": "iRules: Format Code", "command": "irule_format" },
+    {
+        "caption": "Preferences: iRules Settings",
+        "command": "edit_settings",
+        "args": { "base_file": "${packages}/iRules/iRules.sublime-settings", "default": "{\n\t$0\n}\n" }
+    }
 ]

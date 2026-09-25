@@ -6,7 +6,7 @@
                 "caption": "iRules",
                 "id": "irules",
                 "children": [
-                    { "caption": "Format Code", "command": "format_irule" }
+                    { "caption": "Format Code", "command": "irule_format" }
                 ]
             }
         ]
@@ -20,7 +20,14 @@
                     {
                         "caption": "iRules",
                         "children": [
-                            { "caption": "Settings", "command": "irule_edit_settings" }
+                            {
+                                "caption": "Settings",
+                                "command": "edit_settings",
+                                "args": {
+                                    "base_file": "${packages}/iRules/iRules.sublime-settings",
+                                    "default": "{\n\t$0\n}\n"
+                                }
+                            }
                         ]
                     }
                 ]

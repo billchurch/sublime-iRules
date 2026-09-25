@@ -107,6 +107,10 @@ Bug reports and pull requests are welcome at
 [docs/maintaining-data.md](docs/maintaining-data.md) for refreshing the
 command and event lists from F5.
 
+## License
+
+[MIT](LICENSE)
+
 ## Credits
 
 Created by Bill Church in 2014. James Deucker

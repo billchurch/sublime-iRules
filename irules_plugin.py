@@ -66,7 +66,7 @@ def _line_text(view, row):
     return view.substr(view.line(view.text_point(row, 0)))
 
 
-class FormatIruleCommand(sublime_plugin.TextCommand):
+class IruleFormatCommand(sublime_plugin.TextCommand):
     """Re-indent the selected lines, or the whole file when nothing is selected."""
 
     def is_enabled(self, whole_file=False):
@@ -109,19 +109,6 @@ class FormatIruleCommand(sublime_plugin.TextCommand):
         return min(line.begin() + new_column, line.end())
 
 
-class IruleEditSettingsCommand(sublime_plugin.WindowCommand):
-    """Open the package settings, whatever name the package is installed under."""
-
-    def run(self):
-        self.window.run_command(
-            "edit_settings",
-            {
-                "base_file": "${packages}/%s/%s" % (__package__, SETTINGS_FILE),
-                "default": "{\n\t$0\n}\n",
-            },
-        )
-
-
 # Show only the plugin's completions (the events) in the list `when` opens.
 EVENT_LIST_ARGS = {
     "api_completions_only": True,
@@ -150,7 +137,7 @@ class IruleListener(sublime_plugin.EventListener):
 
     def on_pre_save(self, view):
         if is_irule(view) and sublime.load_settings(SETTINGS_FILE).get("format_on_save", False):
-            view.run_command("format_irule", {"whole_file": True})
+            view.run_command("irule_format", {"whole_file": True})
 
     def on_query_completions(self, view, prefix, locations):
         if not is_irule(view) or len(locations) != 1:
