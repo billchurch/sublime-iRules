@@ -452,6 +452,10 @@
     {
       "trigger": "class get",
       "contents": "class get -nocase$0"
+    },
+    {
+      "trigger": "when",
+      "contents": "when "
     }
   ]
 }

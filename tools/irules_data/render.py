@@ -107,7 +107,16 @@ def render_completions(database, overrides):
     for name in overrides.get("tcl_completions", []):
         if name not in known:
             items.append({"trigger": name, "annotation": "Tcl", "kind": "keyword"})
-    items.extend(overrides.get("completions_extra", []))
+    # A hand-written entry with the same trigger as a generated one replaces
+    # its fields (e.g. adds snippet contents) but keeps the rest, such as the
+    # docs details, so no trigger appears twice.
+    by_trigger = {item["trigger"]: item for item in items}
+    for extra in overrides.get("completions_extra", []):
+        if extra["trigger"] in by_trigger:
+            by_trigger[extra["trigger"]].update(extra)
+        else:
+            items.append(dict(extra))
+            by_trigger[extra["trigger"]] = items[-1]
     items.sort(key=lambda item: (item["trigger"].lower(), item["trigger"]))
     document = {"scope": "source.irule - comment - string", "completions": items}
     return json.dumps(document, indent=4, ensure_ascii=False) + "\n"

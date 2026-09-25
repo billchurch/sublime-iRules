@@ -1,12 +1,10 @@
 import unittest
 
 from irules_lib.context import (
-    OPEN_EVENT_LIST,
-    SPACE_THEN_EVENT_LIST,
-    after_text_command,
     completing_event_name,
     event_completion,
     map_column,
+    should_open_event_list,
 )
 
 
@@ -45,24 +43,14 @@ class EventCompletionTests(unittest.TestCase):
         self.assertEqual(event_completion("HTTP_REQUEST", " {"), ("HTTP_REQUEST", False))
 
 
-class AfterTextCommandTests(unittest.TestCase):
-    def test_completing_when_adds_space_and_opens_event_list(self):
-        for command in ("commit_completion", "insert_best_completion", "insert_completion"):
-            self.assertEqual(after_text_command(command, {}, "    when"), SPACE_THEN_EVENT_LIST, command)
+class ShouldOpenEventListTests(unittest.TestCase):
+    def test_true_right_after_when_and_a_space(self):
+        for prefix in ("when ", "    when ", "\twhen "):
+            self.assertTrue(should_open_event_list(prefix), repr(prefix))
 
-    def test_typing_space_after_when_opens_event_list(self):
-        self.assertEqual(after_text_command("insert", {"characters": " "}, "when "), OPEN_EVENT_LIST)
-
-    def test_nothing_elsewhere(self):
-        cases = [
-            ("insert", {"characters": " "}, "set when "),
-            ("insert", {"characters": " "}, "when HTTP_REQUEST "),
-            ("insert", {"characters": "n"}, "when"),
-            ("commit_completion", {}, "whenever"),
-            ("left_delete", {}, "when "),
-        ]
-        for command, args, prefix in cases:
-            self.assertIsNone(after_text_command(command, args, prefix), (command, prefix))
+    def test_false_elsewhere(self):
+        for prefix in ("when", "whenever ", "when HTTP_REQUEST ", "set when ", "# when ", "when  "):
+            self.assertFalse(should_open_event_list(prefix), repr(prefix))
 
 
 if __name__ == "__main__":

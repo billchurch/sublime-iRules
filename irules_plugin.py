@@ -6,12 +6,10 @@ import sublime
 import sublime_plugin
 
 from .irules_lib.context import (
-    OPEN_EVENT_LIST,
-    SPACE_THEN_EVENT_LIST,
-    after_text_command,
     completing_event_name,
     event_completion,
     map_column,
+    should_open_event_list,
 )
 from .irules_lib.events import EVENTS
 from .irules_lib.formatter import format_irule
@@ -125,24 +123,23 @@ EVENT_LIST_ARGS = {
 }
 
 
-class IruleListener(sublime_plugin.EventListener):
-    _inserting = False
+def _open_event_list(view):
+    if not view.is_auto_complete_visible():
+        view.run_command("auto_complete", EVENT_LIST_ARGS)
 
-    def on_post_text_command(self, view, command_name, args):
-        # Ignore the space this listener inserts itself.
-        if self._inserting or not is_irule(view) or len(view.sel()) != 1:
+
+class IruleListener(sublime_plugin.EventListener):
+    def on_modified(self, view):
+        # on_modified fires for every edit (typing, Tab, Enter or a click in
+        # the completion popup); command hooks miss some of those.
+        if not is_irule(view) or len(view.sel()) != 1 or not view.sel()[0].empty():
             return
         point = view.sel()[0].b
         line_prefix = view.substr(sublime.Region(view.line(point).begin(), point))
-        action = after_text_command(command_name, args, line_prefix)
-        if action == SPACE_THEN_EVENT_LIST:
-            self._inserting = True
-            try:
-                view.run_command("insert", {"characters": " "})
-            finally:
-                self._inserting = False
-        if action in (SPACE_THEN_EVENT_LIST, OPEN_EVENT_LIST):
-            view.run_command("auto_complete", EVENT_LIST_ARGS)
+        if should_open_event_list(line_prefix):
+            # Run after the edit finishes: the popup `when` was picked from
+            # has closed by then, and closing it cannot close this one.
+            sublime.set_timeout(lambda: _open_event_list(view), 0)
 
     def on_pre_save(self, view):
         if is_irule(view) and sublime.load_settings(SETTINGS_FILE).get("format_on_save", False):
