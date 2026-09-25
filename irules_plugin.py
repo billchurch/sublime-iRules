@@ -5,7 +5,7 @@ import re
 import sublime
 import sublime_plugin
 
-from .irules_lib.context import completing_event_name, map_column
+from .irules_lib.context import completing_event_name, event_completion, map_column
 from .irules_lib.events import EVENTS
 from .irules_lib.formatter import format_irule
 
@@ -119,18 +119,27 @@ class IruleListener(sublime_plugin.EventListener):
         if not is_irule(view) or len(locations) != 1:
             return None
         point = locations[0]
-        line_prefix = view.substr(sublime.Region(view.line(point).begin(), point))
+        line = view.line(point)
+        line_prefix = view.substr(sublime.Region(line.begin(), point))
         if not completing_event_name(line_prefix):
             return None
-        items = [
-            sublime.CompletionItem(
-                name,
-                annotation="deprecated" if deprecated else "event",
-                kind=KIND_DEPRECATED_EVENT if deprecated else KIND_EVENT,
-                details=details,
+        rest_of_line = view.substr(sublime.Region(point, line.end()))
+        items = []
+        for name, details, deprecated in EVENTS:
+            text, is_snippet = event_completion(name, rest_of_line)
+            items.append(
+                sublime.CompletionItem(
+                    name,
+                    annotation="deprecated" if deprecated else "event",
+                    completion=text,
+                    completion_format=(
+                        sublime.COMPLETION_FORMAT_SNIPPET if is_snippet
+                        else sublime.COMPLETION_FORMAT_TEXT
+                    ),
+                    kind=KIND_DEPRECATED_EVENT if deprecated else KIND_EVENT,
+                    details=details,
+                )
             )
-            for name, details, deprecated in EVENTS
-        ]
         # Only events belong after `when`: hide command completions and buffer words.
         return sublime.CompletionList(
             items,

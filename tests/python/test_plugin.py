@@ -41,6 +41,22 @@ class Selection(list):
         self.append(region if isinstance(region, Region) else Region(region))
 
 
+class CompletionItem(object):
+    def __init__(self, trigger, annotation="", completion="", completion_format=0, kind=None, details=""):
+        self.trigger = trigger
+        self.completion = completion or trigger
+        self.completion_format = completion_format
+        self.annotation = annotation
+        self.kind = kind
+        self.details = details
+
+
+class CompletionList(object):
+    def __init__(self, completions=None, flags=0):
+        self.completions = completions
+        self.flags = flags
+
+
 class FakeView(object):
     def __init__(self, text, selections, tab_size=4):
         self.text = text
@@ -95,8 +111,10 @@ def load_plugin():
     sublime.KIND_ID_COLOR_REDISH = 2
     sublime.INHIBIT_WORD_COMPLETIONS = 8
     sublime.INHIBIT_EXPLICIT_COMPLETIONS = 16
-    sublime.CompletionItem = object
-    sublime.CompletionList = object
+    sublime.COMPLETION_FORMAT_TEXT = 0
+    sublime.COMPLETION_FORMAT_SNIPPET = 1
+    sublime.CompletionItem = CompletionItem
+    sublime.CompletionList = CompletionList
     sublime.load_settings = lambda name: {}
     sublime_plugin = types.ModuleType("sublime_plugin")
     for name in ("TextCommand", "WindowCommand", "EventListener"):
@@ -145,6 +163,31 @@ class FormatCommandTests(unittest.TestCase):
         self.assertEqual(view.text, "when X {\n    pool a\n}\n")
         selected = view.sel()[0]
         self.assertEqual(view.substr(selected), "pool")
+
+
+def complete(text, point):
+    view = FakeView(text, [Region(point)])
+    return PLUGIN.IruleListener().on_query_completions(view, "", [point])
+
+
+class EventCompletionTests(unittest.TestCase):
+    def test_event_at_end_of_line_expands_to_priority_snippet(self):
+        text = "when HTTP_RE"
+        result = complete(text, len(text))
+        item = next(i for i in result.completions if i.trigger == "HTTP_REQUEST")
+        self.assertEqual(item.completion, "HTTP_REQUEST priority ${1:500} {\n\t$0\n}")
+        self.assertEqual(item.completion_format, 1)
+
+    def test_event_with_text_after_caret_inserts_name_only(self):
+        text = "when HTTP_RE priority 100 {"
+        result = complete(text, len("when HTTP_RE"))
+        item = next(i for i in result.completions if i.trigger == "HTTP_REQUEST")
+        self.assertEqual(item.completion, "HTTP_REQUEST")
+        self.assertEqual(item.completion_format, 0)
+
+    def test_no_event_completions_outside_when(self):
+        text = "pool HTTP_RE"
+        self.assertIsNone(complete(text, len(text)))
 
 
 if __name__ == "__main__":

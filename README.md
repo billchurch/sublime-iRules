@@ -16,7 +16,9 @@ Syntax highlighting, completions, snippets and a formatter for
 - **Completions** for about 1,000 commands. Each shows a one-line
   description, the BIG-IP version that introduced it, and a link to F5's
   reference page.
-- **Event completions only where they belong**: right after `when`.
+- **Event completions only where they belong**: right after `when`. Picking
+  an event expands it to `when EVENT priority 500 {` with a body: `500` is
+  selected so you can type over it, and <kbd>Tab</kbd> moves into the body.
 - **Double-substitution warnings**: `expr`, `eval` and `if` without braces,
   and `switch`, `regexp`, `regsub`, `class match` and similar without `--`.
 - **Formatter**: *iRules: Format Code* re-indents the selection, or the whole
