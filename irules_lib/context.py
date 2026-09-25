@@ -41,3 +41,29 @@ def event_completion(name, rest_of_line):
     if rest_of_line.strip():
         return name, False
     return EVENT_SNIPPET % name, True
+
+
+# What to do after a text command, so `when` leads straight into the events.
+SPACE_THEN_EVENT_LIST = "space_then_event_list"
+OPEN_EVENT_LIST = "open_event_list"
+
+_COMPLETION_COMMANDS = ("commit_completion", "insert_best_completion", "insert_completion")
+_WHEN_WORD_RE = re.compile(r"^\s*when$")
+_WHEN_SPACE_RE = re.compile(r"^\s*when $")
+
+
+def after_text_command(command_name, args, line_prefix):
+    """SPACE_THEN_EVENT_LIST, OPEN_EVENT_LIST or None.
+
+    Completing `when` adds the space and opens the event list; typing the
+    space after `when` opens it too.
+    """
+    if command_name in _COMPLETION_COMMANDS and _WHEN_WORD_RE.match(line_prefix):
+        return SPACE_THEN_EVENT_LIST
+    if (
+        command_name == "insert"
+        and (args or {}).get("characters") == " "
+        and _WHEN_SPACE_RE.match(line_prefix)
+    ):
+        return OPEN_EVENT_LIST
+    return None

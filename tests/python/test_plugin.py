@@ -63,6 +63,8 @@ class FakeView(object):
         self._sel = Selection(selections)
         self._settings = {"translate_tabs_to_spaces": True, "tab_size": tab_size}
         self.viewport_moves = 0
+        self.commands = []
+        self.listener = None
 
     def syntax(self):
         return types.SimpleNamespace(scope="source.irule")
@@ -96,6 +98,16 @@ class FakeView(object):
         begin = self.text.rfind("\n", 0, region.begin()) + 1
         end = self.text.find("\n", region.end())
         return Region(begin, len(self.text) if end == -1 else end)
+
+    def run_command(self, name, args=None):
+        self.commands.append((name, args or {}))
+        if name == "insert":
+            point = self._sel[0].b
+            self.text = self.text[:point] + args["characters"] + self.text[point:]
+            self._sel[:] = [Region(point + len(args["characters"]))]
+        # Sublime notifies listeners about commands that plugins run, too.
+        if self.listener is not None:
+            self.listener.on_post_text_command(self, name, args or {})
 
     def viewport_position(self):
         return (0.0, 0.0)
@@ -188,6 +200,28 @@ class EventCompletionTests(unittest.TestCase):
     def test_no_event_completions_outside_when(self):
         text = "pool HTTP_RE"
         self.assertIsNone(complete(text, len(text)))
+
+
+class WhenOpensEventListTests(unittest.TestCase):
+    def after(self, text, command, args=None):
+        view = FakeView(text, [Region(len(text))])
+        view.listener = PLUGIN.IruleListener()
+        view.listener.on_post_text_command(view, command, args or {})
+        return view
+
+    def test_completing_when_inserts_space_and_opens_event_completions(self):
+        view = self.after("when", "commit_completion")
+        self.assertEqual(view.text, "when ")
+        self.assertEqual([name for name, _ in view.commands], ["insert", "auto_complete"])
+        self.assertTrue(view.commands[1][1].get("api_completions_only"))
+
+    def test_typing_space_after_when_opens_event_completions(self):
+        view = self.after("    when ", "insert", {"characters": " "})
+        self.assertEqual([name for name, _ in view.commands], ["auto_complete"])
+
+    def test_other_lines_are_left_alone(self):
+        view = self.after("set when ", "insert", {"characters": " "})
+        self.assertEqual(view.commands, [])
 
 
 if __name__ == "__main__":
