@@ -2,8 +2,6 @@ import sublime
 import sublime_plugin
 import re
 
-import re
-
 
 class FormatError(ValueError):
     pass
@@ -66,7 +64,7 @@ def format_irule(input_code, pre_indent='', tab_char=' ', tab_depth=4, debug=Fal
                 print('not continuation ENDS_IN_CONTINUATION')
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level += tab_depth
-            continuation = true
+            continuation = True
         elif continuation and (RE_ENDS_IN_NEW_BLOCK_CONT.search(line) is not None):
             if debug:
                 print('continuation ENDS_IN_NEW_BLOCK_CONT')
@@ -94,13 +92,13 @@ def format_irule(input_code, pre_indent='', tab_char=' ', tab_depth=4, debug=Fal
                 pre_indent = pre_indent[tab_depth:]
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level -= tab_depth
-            continuation = false
+            continuation = False
         elif continuation and (RE_ENDS_IN_END_ALL.search(line) is not None):
             if debug:
                 print('continuation ENDS_IN_END_ALL')
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level -= tab_depth
-            continuation = false
+            continuation = False
         elif continuation and (RE_ENDS_IN_CONTINUATION.search(line) is not None):
             if debug:
                 print('continuation ENDS_IN_CONTINUATION')
@@ -110,7 +108,7 @@ def format_irule(input_code, pre_indent='', tab_char=' ', tab_depth=4, debug=Fal
                 print('continuation and not ENDS_IN_CONTINUATION')
             out.append(pre_indent + tab_char * tab_level + line)
             tab_level -= tab_depth
-            continuation = false
+            continuation = False
         else:
             if debug:
                 print('default)')
@@ -125,7 +123,7 @@ def format_irule(input_code, pre_indent='', tab_char=' ', tab_depth=4, debug=Fal
 
 def irule_formatter(view, edit, *args, **kwargs):
     if view.is_scratch():
-        show_error('File is scratch')
+        sublime.error_message('File is scratch')
         return
 
     # default parameters
@@ -145,7 +143,7 @@ def irule_formatter(view, edit, *args, **kwargs):
         stdout = format_irule(file_text_utf)
         view.replace(edit, file_text, stdout)
     except FormatError as e:
-        show_error('Format error:\n' + stderr)
+        sublime.error_message('Format error:\n' + str(e))
 
 
 
