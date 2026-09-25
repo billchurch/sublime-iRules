@@ -1,0 +1,8 @@
+<snippet>
+	<content><![CDATA[when ${1:HTTP_REQUEST} priority ${2:500} {
+	${0}
+}]]></content>
+	<tabTrigger>whenp</tabTrigger>
+	<scope>source.irule</scope>
+	<description>when EVENT priority N</description>
+</snippet>
