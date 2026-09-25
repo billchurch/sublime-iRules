@@ -25,3 +25,19 @@ def map_column(column, old_line, new_line):
     if column >= old_indent:
         return column - old_indent + new_indent
     return min(column, new_indent)
+
+
+EVENT_SNIPPET = "%s priority ${1:500} {\n\t$0\n}"
+
+
+def event_completion(name, rest_of_line):
+    """(text, is_snippet) to insert when completing an event after `when`.
+
+    At the end of a line the event expands to a priority and a body, with
+    500 selected first and the body next. If the line already continues
+    after the caret (editing an existing handler), only the name is
+    inserted so the rest of the line is not duplicated.
+    """
+    if rest_of_line.strip():
+        return name, False
+    return EVENT_SNIPPET % name, True

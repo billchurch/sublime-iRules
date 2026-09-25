@@ -1,6 +1,6 @@
 import unittest
 
-from irules_lib.context import completing_event_name, map_column
+from irules_lib.context import completing_event_name, event_completion, map_column
 
 
 class CompletingEventNameTests(unittest.TestCase):
@@ -21,6 +21,21 @@ class MapColumnTests(unittest.TestCase):
     def test_column_inside_old_indent_stays_inside_new_indent(self):
         self.assertEqual(map_column(1, "  pool a", "pool a"), 0)
         self.assertEqual(map_column(1, "  pool a", "    pool a"), 1)
+
+
+class EventCompletionTests(unittest.TestCase):
+    def test_end_of_line_expands_to_priority_and_body(self):
+        self.assertEqual(
+            event_completion("HTTP_REQUEST", ""),
+            ("HTTP_REQUEST priority ${1:500} {\n\t$0\n}", True),
+        )
+
+    def test_trailing_whitespace_still_counts_as_end_of_line(self):
+        self.assertTrue(event_completion("HTTP_REQUEST", "   ")[1])
+
+    def test_existing_text_after_caret_inserts_only_the_name(self):
+        self.assertEqual(event_completion("HTTP_REQUEST", " priority 100 {"), ("HTTP_REQUEST", False))
+        self.assertEqual(event_completion("HTTP_REQUEST", " {"), ("HTTP_REQUEST", False))
 
 
 if __name__ == "__main__":
