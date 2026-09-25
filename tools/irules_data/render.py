@@ -61,7 +61,41 @@ def alternation(names):
     return "|".join(sorted(set(names), key=lambda n: (-len(n), n)))
 
 
+def _variable(syntax_text, name):
+    match = _variable_re(name).search(syntax_text)
+    return match.group(2).split("|") if match else []
+
+
+def _check_prefix_conflicts(groups):
+    """Raise if a name matched earlier would hide part of a name matched later.
+
+    The grammar tries these alternations in order with \\b boundaries, so
+    an earlier `LSN::inbound` would match the start of `LSN::inbound-entry`.
+    Within one alternation, longest-first ordering already prevents this.
+    """
+    seen = set()
+    for group in groups:
+        for name in group:
+            for index, char in enumerate(name):
+                if index and not (char.isalnum() or char == "_") and name[:index] in seen:
+                    raise DataError(
+                        "syntax lists: %r is matched before %r and would hide it"
+                        % (name[:index], name)
+                    )
+        seen.update(group)
+
+
 def render_syntax(syntax_text, lists):
+    # The order command-name and when-event try these alternations in.
+    _check_prefix_conflicts([
+        _variable(syntax_text, "most_likely_tcl_control_code"),
+        lists["deprecated_irule_code"],
+        _variable(syntax_text, "disabled_tcl_code"),
+        _variable(syntax_text, "most_likely_tcl_code"),
+        lists["most_likely_irule_code"],
+        lists["most_likely_irule_nscode"],
+    ])
+    _check_prefix_conflicts([lists["deprecated_irule_events"], lists["most_likely_irule_events"]])
     for variable in GENERATED_SYNTAX_VARIABLES:
         if not lists[variable]:
             # An empty alternation would produce patterns like \b()\b that

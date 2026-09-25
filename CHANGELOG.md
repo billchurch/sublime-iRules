@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 — unreleased
+## 1.0.0 — 2026-09-25
 
 Requires Sublime Text 4 (build 4107+). Sublime Text 3 stays on 0.9.10.
 
@@ -28,6 +28,12 @@ Requires Sublime Text 4 (build 4107+). Sublime Text 3 stays on 0.9.10.
   the following lines; multi-line strings and same-line braced payloads are
   left untouched; brackets inside braced regexes no longer shift indentation.
 - Formatter crashed on line continuations (NameError).
+- `regexp` / `regsub` with `--` and a variable pattern highlighted the whole
+  following block as a regex.
+- A bare `when` at the end of a line no longer marks the next line's first
+  word as an unknown event.
+- The plugin no longer unloads itself after a package upgrade (stale
+  `irules_lib` modules made its import fail until Sublime was restarted).
 
 ### Changed
 - Syntax definition moved to sublime-syntax version 2.

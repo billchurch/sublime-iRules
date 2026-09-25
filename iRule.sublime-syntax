@@ -276,7 +276,7 @@ contexts:
     - include: commands
 
   when:
-    - match: '^(when)\s+'
+    - match: '^(when)[ \t]+'
       scope: meta.function.irule
       captures:
         1: keyword.other.irule

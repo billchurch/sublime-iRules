@@ -41,6 +41,23 @@ def build_database(snapshot, overrides):
         kind_overrides = overrides.get(kind, {})
         rename = kind_overrides.get("rename", {})
         exclude = set(kind_overrides.get("exclude", []))
+        upstream = {entry["name"] for entry in snapshot[kind]}
+        for name in sorted(exclude - upstream):
+            raise DataError(
+                "%s.exclude: %s is not in the clouddocs snapshot; delete it from "
+                "data/overrides.json" % (kind, name)
+            )
+        for old, new in sorted(rename.items()):
+            if old not in upstream:
+                raise DataError(
+                    "%s.rename: %s is not in the clouddocs snapshot; delete it from "
+                    "data/overrides.json" % (kind, old)
+                )
+            if new in upstream:
+                raise DataError(
+                    "%s.rename: %s -> %s, but %s already exists upstream"
+                    % (kind, old, new, new)
+                )
         merged = {}
         rejected = []
         for entry in snapshot[kind]:

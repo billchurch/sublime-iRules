@@ -39,7 +39,15 @@ def _names(snapshot, kind):
 
 
 def cmd_fetch(check):
-    snapshot = scrape()
+    try:
+        snapshot = scrape()
+    except OSError as error:
+        print(
+            "error: could not reach clouddocs.f5.com (%s); this is a network "
+            "problem, not a change in F5's docs" % error,
+            file=sys.stderr,
+        )
+        return 3
     text = json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n"
     old_text = _read(SNAPSHOT)
     if not check:

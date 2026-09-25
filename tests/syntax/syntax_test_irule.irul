@@ -163,3 +163,12 @@ when HTTP_REQUEST {
     pool z
 #   ^^^^ keyword.other.irule
 }
+
+# ------------------------------------------------------------ #
+# A bare `when` (while typing) does not swallow the next line
+# ------------------------------------------------------------ #
+
+when
+pool x
+# <- - invalid
+# <- keyword.other.irule

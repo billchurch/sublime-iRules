@@ -120,6 +120,25 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class PrefixConflictTests(unittest.TestCase):
+    def test_earlier_list_name_that_is_a_prefix_of_a_later_one_is_an_error(self):
+        # command-name matches deprecated names before valid ones, so a
+        # deprecated LSN::inbound would highlight only part of LSN::inbound-entry.
+        database = build_database(
+            snapshot(["pool", ("LSN::inbound", True), "LSN::inbound-entry"], ["HTTP_REQUEST", ("AUTH_ERROR", True)]),
+            {},
+        )
+        with self.assertRaisesRegex(DataError, "LSN::inbound.*LSN::inbound-entry"):
+            render_syntax(SYNTAX, syntax_lists(database, set()))
+
+    def test_word_continuations_are_not_conflicts(self):
+        database = build_database(
+            snapshot(["pool", ("HTTP::cla", True), "HTTP::class"], ["HTTP_REQUEST", ("HTTP_REQ", True)]),
+            {},
+        )
+        render_syntax(SYNTAX, syntax_lists(database, set()))
+
+
 class EmptyListTests(unittest.TestCase):
     def test_empty_generated_list_is_an_error_not_an_empty_regex(self):
         database = build_database(snapshot(["HTTP::uri", "pool", ("matchclass", True)], []), {})
