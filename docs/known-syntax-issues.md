@@ -1,0 +1,127 @@
+# Known syntax issues
+
+Assertions inherited from Sublime Text's Tcl package that the iRules grammar did not satisfy on 2026-09-25 (ST build 4215). They were removed from `tests/syntax/syntax_test_tcl_legacy.irul`. Each is a candidate for a future fix and regression test.
+
+- `syntax_test_tcl_legacy.irul` line 8: `# <- keyword.other`
+- `syntax_test_tcl_legacy.irul` line 9: `#            ^ string.regexp`
+- `syntax_test_tcl_legacy.irul` line 18: `# <- keyword.other`
+- `syntax_test_tcl_legacy.irul` line 19: `#            ^ string.regexp constant.character.escape`
+- `syntax_test_tcl_legacy.irul` line 22: `# <- keyword.other`
+- `syntax_test_tcl_legacy.irul` line 26: `#^^^^^^^^^^^^^^^^^ meta.namespace`
+- `syntax_test_tcl_legacy.irul` line 27: `#              ^ entity.name.namespace`
+- `syntax_test_tcl_legacy.irul` line 29: `#   ^^^^^^^^^^^^^^^^^^ meta.namespace meta.namespace`
+- `syntax_test_tcl_legacy.irul` line 30: `#                  ^ entity.name.namespace`
+- `syntax_test_tcl_legacy.irul` line 41: `#                                                          ^^^^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 52: `#       ^^^^^^^^^^^^^^^^^^^^^^^ string.regexp`
+- `syntax_test_tcl_legacy.irul` line 55: `#                   ^^^^^^^^^^^^^ string.regexp`
+- `syntax_test_tcl_legacy.irul` line 58: `#                   ^^^^^^^^^^^^^^ string.regexp`
+- `syntax_test_tcl_legacy.irul` line 88: `#    ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 89: `#        ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 92: `#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function`
+- `syntax_test_tcl_legacy.irul` line 93: `#    ^ entity.name.function`
+- `syntax_test_tcl_legacy.irul` line 94: `#      ^^^^^^^^^^^^^^^^^^^^^^ meta.function.parameters meta.block`
+- `syntax_test_tcl_legacy.irul` line 95: `#       ^ variable.parameter`
+- `syntax_test_tcl_legacy.irul` line 96: `#         ^^^^^^^^^^^^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 97: `#          ^ variable.parameter`
+- `syntax_test_tcl_legacy.irul` line 98: `#            ^^^^^^^^^ string.quoted.double`
+- `syntax_test_tcl_legacy.irul` line 99: `#                       ^^^^ variable.parameter`
+- `syntax_test_tcl_legacy.irul` line 102: `# <- meta.function`
+- `syntax_test_tcl_legacy.irul` line 106: `#    ^^^^^^^^^^^^^ entity.name.function`
+- `syntax_test_tcl_legacy.irul` line 112: `#       ^^^^^^^ string.quoted.brace`
+- `syntax_test_tcl_legacy.irul` line 114: `#       ^^^^^^^^^ string.quoted.brace`
+- `syntax_test_tcl_legacy.irul` line 116: `#          ^^^^^^^^ string.quoted.brace`
+- `syntax_test_tcl_legacy.irul` line 118: `# ^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 121: `#                     ^ comment.line`
+- `syntax_test_tcl_legacy.irul` line 123: `# ^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 126: `#                     ^ comment.line`
+- `syntax_test_tcl_legacy.irul` line 128: `# ^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 131: `#                     ^ comment.line`
+- `syntax_test_tcl_legacy.irul` line 134: `# <- variable.function`
+- `syntax_test_tcl_legacy.irul` line 137: `#^^^^^^^^^^^^^ variable.function`
+- `syntax_test_tcl_legacy.irul` line 140: `#^^^^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 147: `# <- keyword.control`
+- `syntax_test_tcl_legacy.irul` line 149: `#        ^^ keyword.operator`
+- `syntax_test_tcl_legacy.irul` line 153: `# ^^^^^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 155: `#              ^ keyword.operator`
+- `syntax_test_tcl_legacy.irul` line 158: `# ^^^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 171: `#     ^^^^^^^^ string.quoted.brace`
+- `syntax_test_tcl_legacy.irul` line 172: `#     ^ punctuation.definition.string.begin`
+- `syntax_test_tcl_legacy.irul` line 179: `#      ^^^^^^^^^^^^^^^^ - string`
+- `syntax_test_tcl_legacy.irul` line 182: `#      ^^^^^^^^^^^^^ - string`
+- `syntax_test_tcl_legacy.irul` line 189: `#             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.brace - invalid`
+- `syntax_test_tcl_legacy.irul` line 190: `#                                                ^ - meta.block`
+- `syntax_test_tcl_legacy.irul` line 192: `#             ^^^^^^^^^^^^ string.quoted.brace - invalid`
+- `syntax_test_tcl_legacy.irul` line 193: `#                         ^ - meta.block`
+- `syntax_test_tcl_legacy.irul` line 198: `#   ^^^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 202: `#       ^^^^^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 208: `#           ^^^^^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 215: `#   ^^^^^^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 218: `#       ^^^ keyword.other`
+- `syntax_test_tcl_legacy.irul` line 220: `#       ^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 229: `#   ^^^^^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 231: `#       ^^^^^^^^^^^^^^^^ string.quoted.double`
+- `syntax_test_tcl_legacy.irul` line 233: `#           ^^^^^^^^^ comment`
+- `syntax_test_tcl_legacy.irul` line 235: `#           ^^^^^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 240: `#       ^^^^^^^^^^^ string.quoted.double`
+- `syntax_test_tcl_legacy.irul` line 253: `#     ^^^^^^^^ string.quoted.brace`
+- `syntax_test_tcl_legacy.irul` line 254: `#     ^ punctuation.definition.string.begin`
+- `syntax_test_tcl_legacy.irul` line 255: `#            ^ punctuation.definition.string.end`
+- `syntax_test_tcl_legacy.irul` line 261: `#       ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 262: `#         ^^^^^^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 263: `#           ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 264: `#             ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 268: `#     ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 270: `#           ^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 271: `#           ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 272: `#            ^ punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 274: `#       ^^^^^^^^^^ comment`
+- `syntax_test_tcl_legacy.irul` line 278: `#           ^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 279: `#           ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 280: `#            ^ punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 284: `#           ^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 285: `#           ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 286: `#            ^ punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 287: `#              ^ meta.block punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 292: `#     ^ meta.block punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 294: `#   ^ meta.block variable.function`
+- `syntax_test_tcl_legacy.irul` line 295: `#       ^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 296: `#       ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 297: `#        ^ punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 299: `#   ^ variable.function`
+- `syntax_test_tcl_legacy.irul` line 300: `#       ^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 301: `#       ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 302: `#        ^ punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 304: `#   ^ variable.function`
+- `syntax_test_tcl_legacy.irul` line 305: `#       ^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 306: `#       ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 307: `#        ^ punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 309: `# <- meta.block punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 312: `# <- keyword.control`
+- `syntax_test_tcl_legacy.irul` line 314: `#    ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 315: `#       ^ - meta.block`
+- `syntax_test_tcl_legacy.irul` line 322: `#   ^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 323: `#      ^ meta.block meta.block constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 325: `#        ^ meta.block meta.block punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 328: `#       ^^^^^^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 329: `#             ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 332: `#       ^^^^^^^ meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 333: `#             ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 335: `#   ^ meta.block meta.block punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 337: `# <- meta.block punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 340: `# <- keyword.control`
+- `syntax_test_tcl_legacy.irul` line 342: `#                ^^ keyword.operator.word`
+- `syntax_test_tcl_legacy.irul` line 343: `#                           ^ meta.block punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 347: `#   ^^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 349: `#                                   ^ meta.block meta.block punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 351: `#               ^ keyword.operator`
+- `syntax_test_tcl_legacy.irul` line 352: `#                ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 355: `#       ^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 356: `#          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.block meta.block meta.block`
+- `syntax_test_tcl_legacy.irul` line 357: `#                                 ^ keyword.operator`
+- `syntax_test_tcl_legacy.irul` line 358: `#                                   ^ constant.numeric`
+- `syntax_test_tcl_legacy.irul` line 360: `#           ^ variable.function`
+- `syntax_test_tcl_legacy.irul` line 363: `#       ^ punctuation.section.block.end`
+- `syntax_test_tcl_legacy.irul` line 364: `#         ^ keyword.control`
+- `syntax_test_tcl_legacy.irul` line 365: `#              ^ punctuation.section.block.begin`
+- `syntax_test_tcl_legacy.irul` line 367: `#                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double`
+- `syntax_test_tcl_legacy.irul` line 369: `#           ^ variable.function`

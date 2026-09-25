@@ -1,0 +1,65 @@
+# SYNTAX TEST "Packages/iRules/iRule.sublime-syntax"
+
+# ------------ #
+# Simple Event
+# ------------ #
+
+when CLIENT_ACCEPTED {
+# <- keyword.other.irule
+#    ^^^^^^^^^^^^^^^ entity.name.function.irule
+    log local0.debug "nothing"
+#   ^^^ meta.block.irule keyword.other.irule
+#       ^^^^^^^^^^^^^^^^^^^^^^^ meta.block.irule
+}
+
+# -------------- #
+# Priority Event
+# -------------- #
+
+when CLIENT_ACCEPTED priority 350 {
+# <- keyword.other.irule
+#    ^^^^^^^^^^^^^^^ entity.name.function.irule
+#                    ^^^^^^^^ keyword.other.irule
+#                             ^^^ constant.numeric.integer.irule
+    log local0.debug "nothing"
+#   ^^^ meta.block.irule keyword.other.irule
+#       ^^^^^^^^^^^^^^^^^^^^^^^ meta.block.irule
+#                    ^ meta.block.irule string.quoted.double.irule punctuation.definition.string.begin.irule
+#                     ^^^^^^^^ meta.block.irule string.quoted.double.irule
+#                            ^ meta.block.irule string.quoted.double.irule punctuation.definition.string.end.irule
+}
+
+# ----------------- #
+# Line continuation
+# ----------------- #
+
+set MyDict [list\
+    Key1 {Key Value 1}\
+#                     ^ punctuation.separator.continuation
+]
+
+pg_select $database \
+"SELECT abc, def FROM xyz"
+# <- string
+
+pg_select $database \
+"SELECT abc, def FROM xyz" \
+data
+# <- - variable.function
+
+becs::wizFrame -info [becs_infobody "interface.jpg" \
+    "Specify VID parameters<br><br><strong>VID groups</strong> can be used to build ranges that is added to the VID range field."] \
+    -title "$ifacename VID parameters"
+# ^ - meta.substitution
+
+if {[catch {becs::objectCreate -class interface \
+        -flags "statistics,interfaceautoprobe" \
+        -name $aggrname -role $extra_role \
+                        -parameters [array get params] \
+        -opaque [list "becs.editor" "ifrole.tcl"] \
+        -parentoid $aggr_attach_oid} err]} {
+return "Creating aggregator interface $aggrname under element/management element-module OID $aggr_attach_oid: $err"
+}
+#^ - meta.block
+#^ - meta.substitution
+
